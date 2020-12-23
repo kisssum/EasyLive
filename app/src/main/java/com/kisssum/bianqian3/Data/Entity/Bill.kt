@@ -7,20 +7,20 @@ import java.util.*
 
 @Entity
 data class Bill(
+    @PrimaryKey(autoGenerate = true)
+    val uid: Int,
+
     @ColumnInfo(name = "price")
-    var price: Double = 0.0,
+    var price: Double?,
 
     @ColumnInfo(name = "notes")
-    var notes: String = "",
+    var notes: String?,
 
     @ColumnInfo(name = "type")
-    var type: Int = 0,
+    var type: Int?,
 
     @ColumnInfo(name = "time")
     var time: Long = Calendar.getInstance().timeInMillis,
-) {
-    @PrimaryKey(autoGenerate = true)
-    val uid: Int = 0
-}
+)
 
 // 编号，支出/收入，笔记，类型，时间

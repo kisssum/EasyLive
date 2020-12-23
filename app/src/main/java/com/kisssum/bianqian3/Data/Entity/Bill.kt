@@ -11,13 +11,13 @@ data class Bill(
     val uid: Int,
 
     @ColumnInfo(name = "price")
-    var price: Double?,
+    var price: Double = 0.0,
 
     @ColumnInfo(name = "notes")
-    var notes: String?,
+    var notes: String = "",
 
     @ColumnInfo(name = "type")
-    var type: Int?,
+    var type: Int = 0,
 
     @ColumnInfo(name = "time")
     var time: Long = Calendar.getInstance().timeInMillis,

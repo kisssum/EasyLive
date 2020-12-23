@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/tabControlFragment">
+
+    <fragment
+        android:id="@+id/tabControlFragment"
+        android:name="com.kisssum.bianqian3.TabControlFragment"
+        android:label="fragment_tab_control"
+        tools:layout="@layout/fragment_tab_control" >
+        <action
+            android:id="@+id/action_tabControlFragment_to_billEditFragment"
+            app:destination="@id/billEditFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/billEditFragment"
+        android:name="com.kisssum.bianqian3.Navigation.Bill.BillEditFragment"
+        android:label="fragment_bill_edit"
+        tools:layout="@layout/fragment_bill_edit" />
+</navigation>

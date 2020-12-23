@@ -9,7 +9,7 @@ interface BillDao {
     fun getAll(): List<Bill>
 
     @Insert
-    fun adds(vararg bill: Bill)
+    fun inserts(vararg bill: Bill)
 
     @Delete
     fun dels(vararg bill: Bill)
@@ -24,5 +24,5 @@ interface BillDao {
     fun getCount(): Int
 
     @Query("select * from Bill where uid=:id")
-    fun getBill(id: Int): Bill
+    fun getBillForId(id: Int): Bill
 }

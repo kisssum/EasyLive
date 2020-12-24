@@ -47,99 +47,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <RadioGroup
-        android:id="@+id/group1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/v2">
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="消费" />
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="吃饭" />
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="购物" />
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="住房" />
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="交通" />
-    </RadioGroup>
-
-
-    <RadioGroup
-        android:id="@+id/group2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/group1">
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="手机" />
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="唱歌" />
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="医疗" />
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="教育" />
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="红包" />
-    </RadioGroup>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/v3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.4" />
+        app:layout_constraintGuide_percent="0.26" />
 
     <TextView
+        android:id="@+id/tPrice"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:gravity="center|right"
-        android:text="0.00"
+        android:maxLength="8"
+        android:text="0.0"
         android:textColor="@color/black"
         android:textSize="44sp"
         app:layout_constraintBottom_toTopOf="@+id/v2"
@@ -161,12 +83,13 @@
         app:layout_constraintTop_toTopOf="@+id/v1" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/tNotes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ellipsize="end"
-        android:ems="10"
+        android:hint="笔记"
         android:inputType="textPersonName"
+        android:maxLength="140"
         android:maxLines="3"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -180,20 +103,16 @@
         android:layout_marginEnd="8dp"
         android:text="December 19 15:30"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/v4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.6" />
+        app:layout_constraintTop_toBottomOf="@+id/tNotes" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -202,6 +121,7 @@
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/btn7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -211,6 +131,7 @@
                 android:textSize="36sp" />
 
             <Button
+                android:id="@+id/btn8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -220,6 +141,7 @@
                 android:textSize="36sp" />
 
             <Button
+                android:id="@+id/btn9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -229,6 +151,7 @@
                 android:textSize="36sp" />
 
             <Button
+                android:id="@+id/btnCut"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -247,6 +170,7 @@
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/btn4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -256,6 +180,7 @@
                 android:textSize="36sp" />
 
             <Button
+                android:id="@+id/btn5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -265,6 +190,7 @@
                 android:textSize="36sp" />
 
             <Button
+                android:id="@+id/btn6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -274,11 +200,12 @@
                 android:textSize="36sp" />
 
             <Button
+                android:id="@+id/btnLess"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
-                app:icon="@drawable/abc_vector_test"
+                app:icon="@drawable/ic_baseline_remove_24"
                 app:iconGravity="textStart"
                 app:iconSize="36dp"
                 app:iconTint="@color/black" />
@@ -295,6 +222,7 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <Button
+                android:id="@+id/btn1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -304,6 +232,7 @@
                 android:textSize="36sp" />
 
             <Button
+                android:id="@+id/btn2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -313,6 +242,7 @@
                 android:textSize="36sp" />
 
             <Button
+                android:id="@+id/btn3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -322,11 +252,12 @@
                 android:textSize="36sp" />
 
             <Button
+                android:id="@+id/btnPlus"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
-                app:icon="@drawable/abc_vector_test"
+                app:icon="@drawable/ic_baseline_add_24"
                 app:iconGravity="textStart"
                 app:iconSize="36dp"
                 app:iconTint="@color/black" />
@@ -341,6 +272,7 @@
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/btnAnother"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -351,6 +283,7 @@
                 android:textSize="16sp" />
 
             <Button
+                android:id="@+id/btn0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -360,6 +293,7 @@
                 android:textSize="36sp" />
 
             <Button
+                android:id="@+id/btnPoint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -369,16 +303,37 @@
                 android:textSize="36sp" />
 
             <Button
+                android:id="@+id/btnOK"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
-                app:icon="@drawable/abc_vector_test"
+                app:icon="@drawable/ic_baseline_done_24"
                 app:iconGravity="textStart"
                 app:iconSize="36dp"
                 app:iconTint="@color/black" />
 
         </LinearLayout>
     </LinearLayout>
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="0dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:entries="@array/expenditure_type"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView3"
+        app:layout_constraintTop_toTopOf="@+id/v2" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="消费类型"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/v2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

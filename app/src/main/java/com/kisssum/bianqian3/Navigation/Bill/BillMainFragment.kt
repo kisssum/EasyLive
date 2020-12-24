@@ -46,7 +46,7 @@ class BillMainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.btnAdd.setOnClickListener {
+        binding.btnPlus.setOnClickListener {
             Navigation.findNavController(
                 requireActivity(),
                 R.id.fragment_main
@@ -60,7 +60,7 @@ class BillMainFragment : Fragment() {
             this.adapter = BillMainListAdpater(requireContext())
         }
     }
-    
+
     companion object {
         /**
          * Use this factory method to create a new instance of

@@ -14,6 +14,7 @@ import com.kisssum.bianqian3.Data.Database.BillDatabase
 import com.kisssum.bianqian3.Data.Entity.Bill
 import com.kisssum.bianqian3.R
 import com.kisssum.bianqian3.databinding.FragmentBillEditBinding
+import java.util.*
 import kotlin.math.floor
 
 // TODO: Rename parameter arguments, choose names that match
@@ -63,26 +64,25 @@ class BillEditFragment : Fragment(), View.OnClickListener {
             Navigation.findNavController(requireActivity(), R.id.fragment_main).navigateUp()
         }
 
-//        binding.btnDone.setOnClickListener {
-//            val billDao =
-//                Room.databaseBuilder(requireContext(), BillDatabase::class.java, "bill")
-//                    .allowMainThreadQueries().build()
-//                    .billDao()
-//
-//
-//            // 测试
-//            billDao.delAll()
-//
-//            val b1 = Bill(notes = binding.tNotes.text.toString())
-//            billDao.inserts(b1)
-//
+        binding.btnDone.setOnClickListener {
+            val billDao =
+                Room.databaseBuilder(requireContext(), BillDatabase::class.java, "bill")
+                    .allowMainThreadQueries().build()
+                    .billDao()
+
+            val notes = binding.tNotes.text.toString()
+            val b1 = Bill(price, notes, 0, Calendar.getInstance().timeInMillis)
+            billDao.inserts(b1)
+
+            Toast.makeText(requireContext(), "保存成功", Toast.LENGTH_SHORT).show()
 //            Log.d("TAG", billDao.getCount().toString())
 //            val all = billDao.getAll()
 //
 //            for (i in all) {
 //                Log.d("TAG", "${i.uid} ${i.notes} ${i.time}")
 //            }
-//        }
+
+        }
 
         binding.btn0.setOnClickListener(this)
         binding.btn1.setOnClickListener(this)
@@ -125,7 +125,9 @@ class BillEditFragment : Fragment(), View.OnClickListener {
             R.id.btn4, R.id.btn5, R.id.btn6,
             R.id.btn7, R.id.btn8, R.id.btn9 -> {
                 // 判断字符长度是否超过8位
-                if (price.toString().length >= 10) {
+                if (price.toString().length >= 10
+                    || price2.toString().length >= 10
+                ) {
                     Toast.makeText(requireContext(), "已超过最大字符数", Toast.LENGTH_SHORT).show()
                     return
                 } else {
@@ -149,6 +151,8 @@ class BillEditFragment : Fragment(), View.OnClickListener {
                 }
             }
             R.id.btnLess -> {
+                if (price == 0.0) return
+
                 if (ch == "") ch = "-"
                 else {
                     if (ch == "-") price -= price2
@@ -158,6 +162,8 @@ class BillEditFragment : Fragment(), View.OnClickListener {
                 }
             }
             R.id.btnPlus -> {
+                if (price == 0.0) return
+
                 if (ch == "") ch = "+"
                 else {
                     if (ch == "-") price -= price2

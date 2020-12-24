@@ -1,6 +1,7 @@
 package com.kisssum.bianqian3.Navigation.Bill
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -26,6 +27,7 @@ class BillMainFragment : Fragment() {
     private var param2: String? = null
 
     private lateinit var binding: FragmentBillMainBinding
+    private lateinit var adpater: BillMainListAdpater
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,7 +59,8 @@ class BillMainFragment : Fragment() {
             this.layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
-            this.adapter = BillMainListAdpater(requireContext())
+            adapter = BillMainListAdpater(requireContext())
+            this.adapter = adapter
         }
     }
 

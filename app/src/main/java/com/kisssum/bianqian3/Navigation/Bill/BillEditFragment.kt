@@ -33,6 +33,8 @@ class BillEditFragment : Fragment(), View.OnClickListener {
 
     private lateinit var binding: FragmentBillEditBinding
     private var price = 0.0
+    private var price2 = 0.0
+    private var ch = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,6 +95,8 @@ class BillEditFragment : Fragment(), View.OnClickListener {
         binding.btn8.setOnClickListener(this)
         binding.btn9.setOnClickListener(this)
         binding.btnCut.setOnClickListener(this)
+        binding.btnLess.setOnClickListener(this)
+        binding.btnPlus.setOnClickListener(this)
     }
 
     companion object {
@@ -127,19 +131,57 @@ class BillEditFragment : Fragment(), View.OnClickListener {
                 } else {
                     // 计算
                     val number = (v as Button).text.toString().toInt()
-                    price = if (price == 0.0) number * 1.0
-                    else price * 10 + number
+
+                    if (ch == "") {
+                        price = if (price == 0.0) number * 1.0
+                        else price * 10 + number
+                    } else {
+                        price2 = if (price2 == 0.0) number * 1.0
+                        else price2 * 10 + number
+                    }
                 }
             }
             R.id.btnCut -> {
-                price = floor(price / 10)
+                if (ch == "") price = floor(price / 10)
+                else {
+                    if (price2 == 0.0) ch = ""
+                    else price2 = floor(price2 / 10)
+                }
+            }
+            R.id.btnLess -> {
+                if (ch == "") ch = "-"
+                else {
+                    if (ch == "-") price -= price2
+                    else if (ch == "+") price += price2
+                    price2 = 0.0
+                    ch = ""
+                }
+            }
+            R.id.btnPlus -> {
+                if (ch == "") ch = "+"
+                else {
+                    if (ch == "-") price -= price2
+                    else if (ch == "+") price += price2
+                    price2 = 0.0
+                    ch = ""
+                }
             }
             else -> 0.0
         }
 
-        binding.tPrice.text =
-            if (price == floor(price) && price == 0.0) price.toString()
+        // 显示
+        val oneNumber =
+            if (price == 0.0) price.toString()
             else if (price == floor(price) && price != 0.0) price.toInt().toString()
             else price.toString()
+
+        val twoNumber =
+            if (price2 == 0.0) ""
+            else if (price2 == floor(price2) && price2 != 0.0) price2.toInt().toString()
+            else price2.toString()
+
+        binding.tPrice.text =
+            if (ch == "") oneNumber
+            else oneNumber + ch + twoNumber
     }
 }

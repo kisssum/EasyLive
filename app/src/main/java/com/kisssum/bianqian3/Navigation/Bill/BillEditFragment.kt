@@ -11,8 +11,6 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
-import androidx.room.Room
-import com.kisssum.bianqian3.Data.Database.BillDatabase
 import com.kisssum.bianqian3.Data.Entity.Bill
 import com.kisssum.bianqian3.R
 import com.kisssum.bianqian3.databinding.FragmentBillEditBinding
@@ -29,7 +27,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [BillEditFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class BillEditFragment : Fragment(), View.OnClickListener {
+class BillEditFragment() : Fragment(), View.OnClickListener {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -40,6 +38,8 @@ class BillEditFragment : Fragment(), View.OnClickListener {
     private var price2 = 0.0
     private var ch = ""
     private var type = 0
+    private var uid = -1
+    private lateinit var bill: Bill
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,7 +61,24 @@ class BillEditFragment : Fragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
 
         initBinding()
+        restoreOrinit()
         initBtn()
+
+    }
+
+    private fun restoreOrinit() {
+        if (arguments != null)
+            uid = arguments?.getInt("uid")!!
+
+        if (uid == -1) {
+            bill = Bill()
+        } else {
+            bill = billViewModel.getBillDao().findBill(uid)
+
+            binding.tNotes.setText(bill.notes)
+            binding.tPrice.text = bill.price.toString()
+            binding.type.setSelection(bill.type)
+        }
     }
 
     private fun initBinding() {
@@ -92,14 +109,14 @@ class BillEditFragment : Fragment(), View.OnClickListener {
         }
 
         binding.btnDone.setOnClickListener {
-            val billDao =
-                Room.databaseBuilder(requireContext(), BillDatabase::class.java, "bill")
-                    .allowMainThreadQueries().build()
-                    .billDao()
+            bill.price = price
+            bill.notes = binding.tNotes.text.toString()
+            bill.type = type
+            bill.time = Calendar.getInstance().timeInMillis
 
-            val notes = binding.tNotes.text.toString()
-            val b1 = Bill(price, notes, type, Calendar.getInstance().timeInMillis)
-            billDao.inserts(b1)
+            val billDao = billViewModel.getBillDao()
+            if (uid == -1) billDao.inserts(bill)
+            else billDao.updates(bill)
 
             Toast.makeText(requireContext(), "保存成功", Toast.LENGTH_SHORT).show()
 

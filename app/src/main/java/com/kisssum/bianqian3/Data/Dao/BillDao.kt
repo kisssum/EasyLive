@@ -5,7 +5,7 @@ import com.kisssum.bianqian3.Data.Entity.Bill
 
 @Dao
 interface BillDao {
-    @Query("select * from bill")
+    @Query("select * from bill order by time desc")
     fun getAll(): List<Bill>
 
     @Insert
@@ -24,5 +24,5 @@ interface BillDao {
     fun getCount(): Int
 
     @Query("select * from Bill where uid=:id")
-    fun getBillForId(id: Int): Bill
+    fun findBill(id: Int): Bill
 }

@@ -23,4 +23,6 @@ class BillViewModel(application: Application) : AndroidViewModel(application) {
         val billDao = db.billDao()
         billData.value = billDao.getAll()
     }
+
+    fun getBillDao() = db.billDao()
 }

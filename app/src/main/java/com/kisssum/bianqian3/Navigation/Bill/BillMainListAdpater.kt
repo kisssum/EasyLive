@@ -1,15 +1,19 @@
 package com.kisssum.bianqian3.Navigation.Bill
 
+import android.app.Activity
 import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.kisssum.bianqian3.Data.Entity.Bill
 import com.kisssum.bianqian3.R
+import java.util.*
 
-class BillMainListAdpater(context: Context) :
+class BillMainListAdpater(val context: Context) :
     RecyclerView.Adapter<BillMainListAdpater.myViewHodel>() {
     private var data: List<Bill>? = null
 
@@ -19,7 +23,9 @@ class BillMainListAdpater(context: Context) :
     }
 
     class myViewHodel(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val name = itemView.findViewById<TextView>(R.id.name)
+        val notes = itemView.findViewById<TextView>(R.id.notes)
+        val price = itemView.findViewById<TextView>(R.id.price)
+        val time = itemView.findViewById<TextView>(R.id.time)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): myViewHodel {
@@ -30,8 +36,25 @@ class BillMainListAdpater(context: Context) :
     }
 
     override fun onBindViewHolder(holder: myViewHodel, position: Int) {
-        val bill = data?.get(position)?.uid
-        holder.name.text = "$bill"
+        val bill = data?.get(position)!!
+
+        holder.notes.text = bill.notes
+        holder.price.text = when {
+            (bill.price > 0) -> "+${bill.price}"
+            else -> "-${bill.price}"
+        }
+
+        val t = Calendar.getInstance()
+        t.timeInMillis = bill.time
+        holder.time.text = "${t.get(Calendar.HOUR_OF_DAY)}:${t.get(Calendar.MINUTE)}"
+
+        holder.itemView.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putInt("uid", bill.uid)
+
+            Navigation.findNavController(context as Activity, R.id.fragment_main)
+                .navigate(R.id.action_tabControlFragment_to_billEditFragment, bundle)
+        }
     }
 
     override fun getItemCount() = data!!.size

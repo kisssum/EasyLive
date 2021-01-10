@@ -59,7 +59,7 @@ class BillMainFragment : Fragment() {
             ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
         ).get(BillViewModel::class.java)
 
-        adpater = BillMainListAdpater(requireContext())
+        adpater = BillMainListAdpater(requireContext(), billViewModel)
 
         billViewModel.getBillData().observe(requireActivity()) {
             adpater.updateData(it)
@@ -72,10 +72,8 @@ class BillMainFragment : Fragment() {
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
         binding.btnPlus.setOnClickListener {
-            Navigation.findNavController(
-                requireActivity(),
-                R.id.fragment_main
-            ).navigate(R.id.action_tabControlFragment_to_billEditFragment)
+            Navigation.findNavController(requireActivity(), R.id.fragment_main)
+                .navigate(R.id.action_tabControlFragment_to_billEditFragment)
         }
     }
 

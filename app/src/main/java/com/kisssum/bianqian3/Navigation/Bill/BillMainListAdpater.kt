@@ -9,11 +9,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.kisssum.bianqian3.Data.Entity.Bill
 import com.kisssum.bianqian3.R
 import java.util.*
 
-class BillMainListAdpater(val context: Context) :
+class BillMainListAdpater(val context: Context, val billViewModel: BillViewModel) :
     RecyclerView.Adapter<BillMainListAdpater.myViewHodel>() {
     private var data: List<Bill>? = null
 
@@ -54,6 +55,14 @@ class BillMainListAdpater(val context: Context) :
 
             Navigation.findNavController(context as Activity, R.id.fragment_main)
                 .navigate(R.id.action_tabControlFragment_to_billEditFragment, bundle)
+        }
+
+        holder.itemView.setOnLongClickListener {
+            Snackbar.make(it, "是否删除?", Snackbar.LENGTH_SHORT).setAction("确定") {
+                billViewModel.getBillDao().dels(bill)
+                billViewModel.update()
+            }.show()
+            true
         }
     }
 

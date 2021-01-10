@@ -118,10 +118,11 @@ class BillEditFragment() : Fragment(), View.OnClickListener {
             if (uid == -1) billDao.inserts(bill)
             else billDao.updates(bill)
 
-            Toast.makeText(requireContext(), "保存成功", Toast.LENGTH_SHORT).show()
-
             // 更新数据
             billViewModel.update()
+           
+            Toast.makeText(requireContext(), "账单已保存", Toast.LENGTH_SHORT).show()
+            Navigation.findNavController(requireActivity(), R.id.fragment_main).navigateUp()
         }
 
         binding.btn0.setOnClickListener(this)

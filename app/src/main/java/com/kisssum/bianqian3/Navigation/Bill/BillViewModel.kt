@@ -12,6 +12,7 @@ class BillViewModel(application: Application) : AndroidViewModel(application) {
     private val db =
         Room.databaseBuilder(application, BillDatabase::class.java, "bill").allowMainThreadQueries()
             .build()
+    private val billDao = db.billDao()
 
     init {
         update()
@@ -20,9 +21,8 @@ class BillViewModel(application: Application) : AndroidViewModel(application) {
     fun getBillData() = billData
 
     fun update() {
-        val billDao = db.billDao()
         billData.value = billDao.getAll()
     }
 
-    fun getBillDao() = db.billDao()
+    fun getBillDao() = billDao
 }

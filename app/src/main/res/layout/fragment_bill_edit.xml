@@ -323,6 +323,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:entries="@array/expenditure_type"
+        android:spinnerMode="dialog"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView3"
         app:layout_constraintTop_toTopOf="@+id/v2" />

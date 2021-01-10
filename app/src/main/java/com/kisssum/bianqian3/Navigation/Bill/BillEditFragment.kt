@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.Button
 import android.widget.Toast
 import androidx.navigation.Navigation
@@ -36,6 +37,7 @@ class BillEditFragment : Fragment(), View.OnClickListener {
     private var price = 0.0
     private var price2 = 0.0
     private var ch = ""
+    private var type = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +66,21 @@ class BillEditFragment : Fragment(), View.OnClickListener {
             Navigation.findNavController(requireActivity(), R.id.fragment_main).navigateUp()
         }
 
+        binding.type.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                type = position
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+        }
+
         binding.btnDone.setOnClickListener {
             val billDao =
                 Room.databaseBuilder(requireContext(), BillDatabase::class.java, "bill")
@@ -71,7 +88,7 @@ class BillEditFragment : Fragment(), View.OnClickListener {
                     .billDao()
 
             val notes = binding.tNotes.text.toString()
-            val b1 = Bill(price, notes, 0, Calendar.getInstance().timeInMillis)
+            val b1 = Bill(price, notes, type, Calendar.getInstance().timeInMillis)
             billDao.inserts(b1)
 
             Toast.makeText(requireContext(), "保存成功", Toast.LENGTH_SHORT).show()

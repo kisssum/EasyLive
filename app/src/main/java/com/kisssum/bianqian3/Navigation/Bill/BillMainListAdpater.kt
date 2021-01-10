@@ -43,7 +43,7 @@ class BillMainListAdpater(context: Context) :
 
     override fun onBindViewHolder(holder: myViewHodel, position: Int) {
         val bill = data[position]
-        holder.name.text = bill.uid.toString()
+        holder.name.text = "$bill"
     }
 
     override fun getItemCount() = data.size

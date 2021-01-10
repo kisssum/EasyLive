@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.Button
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.room.Room
 import com.kisssum.bianqian3.Data.Database.BillDatabase
@@ -34,6 +35,7 @@ class BillEditFragment : Fragment(), View.OnClickListener {
     private var param2: String? = null
 
     private lateinit var binding: FragmentBillEditBinding
+    private lateinit var billViewModel: BillViewModel
     private var price = 0.0
     private var price2 = 0.0
     private var ch = ""
@@ -58,7 +60,15 @@ class BillEditFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initBinding()
         initBtn()
+    }
+
+    private fun initBinding() {
+        billViewModel = ViewModelProvider(
+            requireActivity(),
+            ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
+        ).get(BillViewModel::class.java)
     }
 
     private fun initBtn() {
@@ -92,13 +102,9 @@ class BillEditFragment : Fragment(), View.OnClickListener {
             billDao.inserts(b1)
 
             Toast.makeText(requireContext(), "保存成功", Toast.LENGTH_SHORT).show()
-//            Log.d("TAG", billDao.getCount().toString())
-//            val all = billDao.getAll()
-//
-//            for (i in all) {
-//                Log.d("TAG", "${i.uid} ${i.notes} ${i.time}")
-//            }
 
+            // 更新数据
+            billViewModel.update()
         }
 
         binding.btn0.setOnClickListener(this)

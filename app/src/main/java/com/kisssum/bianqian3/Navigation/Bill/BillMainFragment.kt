@@ -1,11 +1,11 @@
 package com.kisssum.bianqian3.Navigation.Bill
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kisssum.bianqian3.R
@@ -28,6 +28,7 @@ class BillMainFragment : Fragment() {
 
     private lateinit var binding: FragmentBillMainBinding
     private lateinit var adpater: BillMainListAdpater
+    private lateinit var billViewModel: BillViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,19 +49,33 @@ class BillMainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initBinding()
+        initView()
+    }
+
+    private fun initBinding() {
+        billViewModel = ViewModelProvider(
+            requireActivity(),
+            ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
+        ).get(BillViewModel::class.java)
+
+        adpater = BillMainListAdpater(requireContext())
+
+        billViewModel.getBillData().observe(requireActivity()) {
+            adpater.updateData(it)
+            binding.list.adapter = adpater
+        }
+    }
+
+    private fun initView() {
+        binding.list.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+
         binding.btnPlus.setOnClickListener {
             Navigation.findNavController(
                 requireActivity(),
                 R.id.fragment_main
             ).navigate(R.id.action_tabControlFragment_to_billEditFragment)
-        }
-
-        binding.list.apply {
-            this.layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-
-            adapter = BillMainListAdpater(requireContext())
-            this.adapter = adapter
         }
     }
 

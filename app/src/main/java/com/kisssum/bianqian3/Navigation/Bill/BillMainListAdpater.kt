@@ -1,32 +1,20 @@
 package com.kisssum.bianqian3.Navigation.Bill
 
 import android.content.Context
-import android.nfc.Tag
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
-import com.kisssum.bianqian3.Data.Database.BillDatabase
 import com.kisssum.bianqian3.Data.Entity.Bill
 import com.kisssum.bianqian3.R
 
 class BillMainListAdpater(context: Context) :
     RecyclerView.Adapter<BillMainListAdpater.myViewHodel>() {
-    private var data: List<Bill>
-    private val db =
-        Room.databaseBuilder(context, BillDatabase::class.java, "bill").allowMainThreadQueries()
-            .build()
-    private val billDao = db.billDao()
+    private var data: List<Bill>? = null
 
-    init {
-        data = billDao.getAll()
-    }
-
-    fun updateData() {
-        data = billDao.getAll()
+    fun updateData(newData: List<Bill>) {
+        data = newData
         notifyDataSetChanged()
     }
 
@@ -42,9 +30,9 @@ class BillMainListAdpater(context: Context) :
     }
 
     override fun onBindViewHolder(holder: myViewHodel, position: Int) {
-        val bill = data[position]
+        val bill = data?.get(position)?.uid
         holder.name.text = "$bill"
     }
 
-    override fun getItemCount() = data.size
+    override fun getItemCount() = data!!.size
 }

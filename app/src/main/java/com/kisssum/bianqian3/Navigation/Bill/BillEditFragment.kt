@@ -120,7 +120,7 @@ class BillEditFragment() : Fragment(), View.OnClickListener {
 
             // 更新数据
             billViewModel.update()
-           
+
             Toast.makeText(requireContext(), "账单已保存", Toast.LENGTH_SHORT).show()
             Navigation.findNavController(requireActivity(), R.id.fragment_main).navigateUp()
         }
@@ -162,6 +162,9 @@ class BillEditFragment() : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v?.id) {
+            R.id.btn0 -> {
+                price *= 10
+            }
             R.id.btn1, R.id.btn2, R.id.btn3,
             R.id.btn4, R.id.btn5, R.id.btn6,
             R.id.btn7, R.id.btn8, R.id.btn9 -> {

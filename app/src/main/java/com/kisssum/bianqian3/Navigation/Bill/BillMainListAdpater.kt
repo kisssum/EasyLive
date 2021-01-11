@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
@@ -21,18 +22,38 @@ class BillMainListAdpater(val context: Context, val billViewModel: BillViewModel
     private val NO_DATE = 0
     private val HAVE_DATE = 1
 
+    private val typeImg = arrayListOf(
+        R.drawable.icon_consumption,
+        R.drawable.icon_eat,
+        R.drawable.icon_shop,
+        R.drawable.icon_housing,
+        R.drawable.icon_traffic,
+        R.drawable.icon_phone,
+        R.drawable.icon_sing,
+        R.drawable.icon_medical,
+        R.drawable.icon_education,
+        R.drawable.icon_redpackge,
+        R.drawable.icon_tourism,
+        R.drawable.icon_travel,
+        R.drawable.icon_savings,
+        R.drawable.icon_bankcard,
+        R.drawable.icon_other
+    )
+
     fun updateData(newData: List<Bill>) {
         data = newData
         notifyDataSetChanged()
     }
 
     class NoDateViewHodel(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val icon = itemView.findViewById<ImageView>(R.id.icon)
         val notes = itemView.findViewById<TextView>(R.id.notes)
         val price = itemView.findViewById<TextView>(R.id.price)
         val time = itemView.findViewById<TextView>(R.id.time)
     }
 
     class HaveDateViewHodel(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val icon = itemView.findViewById<ImageView>(R.id.icon)
         val notes = itemView.findViewById<TextView>(R.id.notes)
         val price = itemView.findViewById<TextView>(R.id.price)
         val time = itemView.findViewById<TextView>(R.id.time)
@@ -69,6 +90,7 @@ class BillMainListAdpater(val context: Context, val billViewModel: BillViewModel
                 val t = Calendar.getInstance()
                 t.timeInMillis = bill.time
                 holder.time.text = "${t.get(Calendar.HOUR_OF_DAY)}:${t.get(Calendar.MINUTE)}"
+                holder.icon.setImageResource(typeImg[bill.type])
             }
             (holder is HaveDateViewHodel) -> {
                 holder.notes.text = bill.notes
@@ -80,6 +102,7 @@ class BillMainListAdpater(val context: Context, val billViewModel: BillViewModel
                 val t = Calendar.getInstance()
                 t.timeInMillis = bill.time
                 holder.time.text = "${t.get(Calendar.HOUR_OF_DAY)}:${t.get(Calendar.MINUTE)}"
+                holder.icon.setImageResource(typeImg[bill.type])
 
                 var week = when (t.get(Calendar.DAY_OF_WEEK)) {
                     1 -> "星期日"

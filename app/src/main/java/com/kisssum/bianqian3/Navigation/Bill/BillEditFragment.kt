@@ -35,12 +35,11 @@ class BillEditFragment() : Fragment(), View.OnClickListener {
 
     private lateinit var binding: FragmentBillEditBinding
     private lateinit var billViewModel: BillViewModel
+    private lateinit var bill: Bill
     private var price = 0.0
     private var price2 = 0.0
     private var ch = ""
-    private var type = 0
     private var uid = -1
-    private lateinit var bill: Bill
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,31 +60,31 @@ class BillEditFragment() : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initBinding()
         restoreOrinit()
         initBtn()
-
     }
 
     private fun restoreOrinit() {
-        // 是否是列表而不是新建账单
-        if (arguments != null)
-            uid = arguments?.getInt("uid")!!
+        // 连接viewModel
+        billViewModel = ViewModelProvider(
+            requireActivity(),
+            ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
+        ).get(BillViewModel::class.java)
 
-        if (uid == -1) {
-            bill = Bill()
-        } else {
-            bill = billViewModel.getBillDao().findBill(uid)
+        // 获取uid，-1为新建账单,其它为还原账单
+        uid = if (arguments == null) -1
+        else arguments?.getInt("uid")!!
 
-            // 金额
-            binding.tPrice.text = bill.price.toString()
-            price = bill.price
+        bill = if (uid == -1) Bill()
+        else billViewModel.getBillDao().findBill(uid)
 
-            // 笔记
-            binding.tNotes.setText(bill.notes)
-            binding.type.setSelection(bill.type)
-        }
-
+        // 金额
+        binding.tPrice.text = bill.price.toString()
+        price = bill.price
+        // 笔记
+        binding.tNotes.setText(bill.notes)
+        // 类型
+        binding.type.setSelection(bill.type)
         // 时间
         val time = Calendar.getInstance()
         time.timeInMillis = bill.time
@@ -93,18 +92,13 @@ class BillEditFragment() : Fragment(), View.OnClickListener {
             "${time[Calendar.MONTH] + 1}月${time[Calendar.DAY_OF_MONTH]}日 ${time[Calendar.HOUR_OF_DAY]}:${time[Calendar.MINUTE]}"
     }
 
-    private fun initBinding() {
-        billViewModel = ViewModelProvider(
-            requireActivity(),
-            ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
-        ).get(BillViewModel::class.java)
-    }
-
     private fun initBtn() {
+        // 返回按钮
         binding.btnCancel.setOnClickListener {
             Navigation.findNavController(requireActivity(), R.id.fragment_main).navigateUp()
         }
 
+        // 选择类型
         binding.type.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
@@ -112,7 +106,7 @@ class BillEditFragment() : Fragment(), View.OnClickListener {
                 position: Int,
                 id: Long
             ) {
-                type = position
+                bill.type = position
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -120,6 +114,7 @@ class BillEditFragment() : Fragment(), View.OnClickListener {
             }
         }
 
+        // 选择时间
         binding.time.setOnClickListener {
             val time = Calendar.getInstance()
             time.timeInMillis = bill.time
@@ -139,12 +134,11 @@ class BillEditFragment() : Fragment(), View.OnClickListener {
                             month = i1
                             day = i2
 
-                            time.set(year, month, day, hour, minute)
-                            bill.time = time.timeInMillis
-
                             // 时间
+                            time.set(year, month, day, hour, minute)
                             binding.time.text =
                                 "${time[Calendar.MONTH] + 1}月${time[Calendar.DAY_OF_MONTH]}日 ${time[Calendar.HOUR_OF_DAY]}:${time[Calendar.MINUTE]}"
+                            bill.time = time.timeInMillis
                         }, year, month, day
                     ).show()
                 }
@@ -155,34 +149,28 @@ class BillEditFragment() : Fragment(), View.OnClickListener {
                             hour = i
                             minute = i1
 
-                            time.set(year, month, day, hour, minute)
-                            bill.time = time.timeInMillis
-
                             // 时间
+                            time.set(year, month, day, hour, minute)
                             binding.time.text =
                                 "${time[Calendar.MONTH] + 1}月${time[Calendar.DAY_OF_MONTH]}日 ${time[Calendar.HOUR_OF_DAY]}:${time[Calendar.MINUTE]}"
+                            bill.time = time.timeInMillis
                         }, hour, minute, true
                     ).show()
                 }
                 .create()
                 .show()
-
         }
 
         binding.btnDone.setOnClickListener {
             bill.price = price
             bill.notes = binding.tNotes.text.toString()
-            bill.type = type
 
             val billDao = billViewModel.getBillDao()
-            if (uid == -1) {
-                bill.time = Calendar.getInstance().timeInMillis
-                billDao.inserts(bill)
-            } else billDao.updates(bill)
+            if (uid == -1) billDao.inserts(bill)
+            else billDao.updates(bill)
 
-            // 更新数据
+            // 更新数据并返回
             billViewModel.update()
-
             Toast.makeText(requireContext(), "账单已保存", Toast.LENGTH_SHORT).show()
             Navigation.findNavController(requireActivity(), R.id.fragment_main).navigateUp()
         }

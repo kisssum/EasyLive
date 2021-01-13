@@ -60,6 +60,7 @@ class SettingMainFragment : Fragment() {
                 .setMessage("是否删除所有账单?")
                 .setPositiveButton("确认") { dialogInterface: DialogInterface, i: Int ->
                     billViewModel.getBillDao().delAll()
+                    billViewModel.update()
                 }
                 .setNeutralButton("取消") { dialogInterface: DialogInterface, i: Int -> }
                 .create()

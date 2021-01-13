@@ -18,10 +18,8 @@ import java.util.*
 class BillMainListAdpater(val context: Context, val billViewModel: BillViewModel) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var data: List<Bill>? = null
-
-    private val NO_DATE = 0
-    private val HAVE_DATE = 1
-
+    private val NO_TITLE = 0
+    private val HAVE_TITLE = 1
     private val typeImg = arrayListOf(
         R.drawable.icon_consumption,
         R.drawable.icon_eat,
@@ -45,14 +43,14 @@ class BillMainListAdpater(val context: Context, val billViewModel: BillViewModel
         notifyDataSetChanged()
     }
 
-    class NoDateViewHodel(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class NoTitleViewHodel(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val icon = itemView.findViewById<ImageView>(R.id.icon)
         val notes = itemView.findViewById<TextView>(R.id.notes)
         val price = itemView.findViewById<TextView>(R.id.price)
         val time = itemView.findViewById<TextView>(R.id.time)
     }
 
-    class HaveDateViewHodel(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class HaveTitleViewHodel(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val icon = itemView.findViewById<ImageView>(R.id.icon)
         val notes = itemView.findViewById<TextView>(R.id.notes)
         val price = itemView.findViewById<TextView>(R.id.price)
@@ -62,17 +60,17 @@ class BillMainListAdpater(val context: Context, val billViewModel: BillViewModel
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
         // 根据类型判断用什么布局
-        NO_DATE -> {
+        NO_TITLE -> {
             val item = LayoutInflater.from(parent.context)
                 .inflate(R.layout.bill_list_item_no_date, parent, false)
 
-            NoDateViewHodel(item)
+            NoTitleViewHodel(item)
         }
         else -> {
             val item = LayoutInflater.from(parent.context)
                 .inflate(R.layout.bill_list_item_have_date, parent, false)
 
-            HaveDateViewHodel(item)
+            HaveTitleViewHodel(item)
         }
     }
 
@@ -80,7 +78,7 @@ class BillMainListAdpater(val context: Context, val billViewModel: BillViewModel
         val bill = data?.get(position)!!
 
         when {
-            (holder is NoDateViewHodel) -> {
+            (holder is NoTitleViewHodel) -> {
                 holder.notes.text = bill.notes
                 holder.price.text = when {
                     (bill.price > 0) -> "+${bill.price}"
@@ -92,7 +90,7 @@ class BillMainListAdpater(val context: Context, val billViewModel: BillViewModel
                 holder.time.text = "${t.get(Calendar.HOUR_OF_DAY)}:${t.get(Calendar.MINUTE)}"
                 holder.icon.setImageResource(typeImg[bill.type])
             }
-            (holder is HaveDateViewHodel) -> {
+            (holder is HaveTitleViewHodel) -> {
                 holder.notes.text = bill.notes
                 holder.price.text = when {
                     (bill.price > 0) -> "+${bill.price}"
@@ -146,11 +144,10 @@ class BillMainListAdpater(val context: Context, val billViewModel: BillViewModel
 
     override fun getItemViewType(position: Int) = when (position) {
         // 根据时间返回布局类型
-        0 -> HAVE_DATE
+        0 -> HAVE_TITLE
         else -> {
             val lastTime = Calendar.getInstance()
             val nowTime = Calendar.getInstance()
-
             lastTime.timeInMillis = data?.get(position - 1)?.time!!
             nowTime.timeInMillis = data?.get(position)?.time!!
 
@@ -158,8 +155,8 @@ class BillMainListAdpater(val context: Context, val billViewModel: BillViewModel
             when {
                 ((lastTime.get(Calendar.YEAR) == nowTime.get(Calendar.YEAR))
                         && (lastTime.get(Calendar.MONTH) == nowTime.get(Calendar.MONTH))
-                        && (lastTime.get(Calendar.DAY_OF_MONTH) == nowTime.get(Calendar.DAY_OF_MONTH))) -> NO_DATE
-                else -> HAVE_DATE
+                        && (lastTime.get(Calendar.DAY_OF_MONTH) == nowTime.get(Calendar.DAY_OF_MONTH))) -> NO_TITLE
+                else -> HAVE_TITLE
             }
         }
     }

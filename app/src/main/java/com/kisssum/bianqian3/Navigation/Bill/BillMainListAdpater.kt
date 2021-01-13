@@ -93,7 +93,7 @@ class BillMainListAdpater(val context: Context, val billViewModel: BillViewModel
             (holder is HaveTitleViewHodel) -> {
                 holder.notes.text = bill.notes
                 holder.price.text = when {
-                    (bill.price > 0) -> "-${bill.price}"
+                    (bill.price >= 0) -> "-${bill.price}"
                     else -> "${bill.price}"
                 }
 

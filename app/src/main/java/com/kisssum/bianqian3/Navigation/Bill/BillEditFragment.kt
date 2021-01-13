@@ -1,14 +1,15 @@
 package com.kisssum.bianqian3.Navigation.Bill
 
+import android.app.AlertDialog
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.Button
-import android.widget.Toast
+import android.widget.*
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.kisssum.bianqian3.Data.Entity.Bill
@@ -67,6 +68,7 @@ class BillEditFragment() : Fragment(), View.OnClickListener {
     }
 
     private fun restoreOrinit() {
+        // 是否是列表而不是新建账单
         if (arguments != null)
             uid = arguments?.getInt("uid")!!
 
@@ -75,10 +77,20 @@ class BillEditFragment() : Fragment(), View.OnClickListener {
         } else {
             bill = billViewModel.getBillDao().findBill(uid)
 
-            binding.tNotes.setText(bill.notes)
+            // 金额
             binding.tPrice.text = bill.price.toString()
+            price = bill.price
+
+            // 笔记
+            binding.tNotes.setText(bill.notes)
             binding.type.setSelection(bill.type)
         }
+
+        // 时间
+        val time = Calendar.getInstance()
+        time.timeInMillis = bill.time
+        binding.time.text =
+            "${time[Calendar.MONTH] + 1}月${time[Calendar.DAY_OF_MONTH]}日 ${time[Calendar.HOUR_OF_DAY]}:${time[Calendar.MINUTE]}"
     }
 
     private fun initBinding() {
@@ -108,15 +120,65 @@ class BillEditFragment() : Fragment(), View.OnClickListener {
             }
         }
 
+        binding.time.setOnClickListener {
+            val time = Calendar.getInstance()
+            time.timeInMillis = bill.time
+            var year = time[Calendar.YEAR]
+            var month = time[Calendar.MONTH]
+            var day = time[Calendar.DAY_OF_MONTH]
+            var hour = time[Calendar.HOUR_OF_DAY]
+            var minute = time[Calendar.MINUTE]
+
+            AlertDialog.Builder(requireContext())
+                .setMessage("设置时间")
+                .setNegativeButton("日期") { dialogInterface: DialogInterface, i: Int ->
+                    DatePickerDialog(
+                        requireContext(),
+                        { datePicker: DatePicker, i: Int, i1: Int, i2: Int ->
+                            year = i
+                            month = i1
+                            day = i2
+
+                            time.set(year, month, day, hour, minute)
+                            bill.time = time.timeInMillis
+
+                            // 时间
+                            binding.time.text =
+                                "${time[Calendar.MONTH] + 1}月${time[Calendar.DAY_OF_MONTH]}日 ${time[Calendar.HOUR_OF_DAY]}:${time[Calendar.MINUTE]}"
+                        }, year, month, day
+                    ).show()
+                }
+                .setPositiveButton("时间") { dialogInterface: DialogInterface, i: Int ->
+                    TimePickerDialog(
+                        requireContext(),
+                        { timePicker: TimePicker, i: Int, i1: Int ->
+                            hour = i
+                            minute = i1
+
+                            time.set(year, month, day, hour, minute)
+                            bill.time = time.timeInMillis
+
+                            // 时间
+                            binding.time.text =
+                                "${time[Calendar.MONTH] + 1}月${time[Calendar.DAY_OF_MONTH]}日 ${time[Calendar.HOUR_OF_DAY]}:${time[Calendar.MINUTE]}"
+                        }, hour, minute, true
+                    ).show()
+                }
+                .create()
+                .show()
+
+        }
+
         binding.btnDone.setOnClickListener {
             bill.price = price
             bill.notes = binding.tNotes.text.toString()
             bill.type = type
-            bill.time = Calendar.getInstance().timeInMillis
 
             val billDao = billViewModel.getBillDao()
-            if (uid == -1) billDao.inserts(bill)
-            else billDao.updates(bill)
+            if (uid == -1) {
+                bill.time = Calendar.getInstance().timeInMillis
+                billDao.inserts(bill)
+            } else billDao.updates(bill)
 
             // 更新数据
             billViewModel.update()

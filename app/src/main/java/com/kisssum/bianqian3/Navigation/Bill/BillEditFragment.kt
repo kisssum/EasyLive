@@ -190,30 +190,21 @@ class BillEditFragment() : Fragment(), View.OnClickListener {
         binding.btnPlus.setOnClickListener(this)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment BillEditFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            BillEditFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
-
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btn0 -> {
-                price *= 10
+                // 判断字符长度是否超过8位
+                if (price.toString().length >= 10
+                    || price2.toString().length >= 10
+                ) {
+                    Toast.makeText(requireContext(), "已超过最大字符数", Toast.LENGTH_SHORT).show()
+                    return
+                } else {
+                    if (price2 != 0.0)
+                        price2 *= 10
+                    else
+                        price *= 10
+                }
             }
             R.id.btn1, R.id.btn2, R.id.btn3,
             R.id.btn4, R.id.btn5, R.id.btn6,
@@ -283,5 +274,25 @@ class BillEditFragment() : Fragment(), View.OnClickListener {
         binding.tPrice.text =
             if (ch == "") oneNumber
             else oneNumber + ch + twoNumber
+    }
+
+    companion object {
+        /**
+         * Use this factory method to create a new instance of
+         * this fragment using the provided parameters.
+         *
+         * @param param1 Parameter 1.
+         * @param param2 Parameter 2.
+         * @return A new instance of fragment BillEditFragment.
+         */
+        // TODO: Rename and change types and number of parameters
+        @JvmStatic
+        fun newInstance(param1: String, param2: String) =
+            BillEditFragment().apply {
+                arguments = Bundle().apply {
+                    putString(ARG_PARAM1, param1)
+                    putString(ARG_PARAM2, param2)
+                }
+            }
     }
 }

@@ -62,7 +62,7 @@
         android:gravity="center|right"
         android:maxLength="8"
         android:text="0.0"
-        android:textColor="@color/black"
+        android:textColor="?attr/actionMenuTextColor"
         android:textSize="44sp"
         app:layout_constraintBottom_toTopOf="@+id/v2"
         app:layout_constraintEnd_toStartOf="@+id/h1"
@@ -91,7 +91,7 @@
         android:inputType="textPersonName"
         android:maxLength="140"
         android:maxLines="3"
-        android:textSize="14sp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -128,7 +128,7 @@
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:text="7"
-                android:textColor="@color/black"
+                android:textColor="?attr/actionMenuTextColor"
                 android:textSize="36sp" />
 
             <Button
@@ -138,7 +138,7 @@
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:text="8"
-                android:textColor="@color/black"
+                android:textColor="?attr/actionMenuTextColor"
                 android:textSize="36sp" />
 
             <Button
@@ -148,7 +148,7 @@
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:text="9"
-                android:textColor="@color/black"
+                android:textColor="?attr/actionMenuTextColor"
                 android:textSize="36sp" />
 
             <Button
@@ -160,7 +160,7 @@
                 app:icon="@drawable/abc_vector_test"
                 app:iconGravity="textStart"
                 app:iconSize="36dp"
-                app:iconTint="@color/black" />
+                app:iconTint="?attr/actionMenuTextColor" />
 
         </LinearLayout>
 
@@ -177,7 +177,7 @@
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:text="4"
-                android:textColor="@color/black"
+                android:textColor="?attr/actionMenuTextColor"
                 android:textSize="36sp" />
 
             <Button
@@ -187,7 +187,7 @@
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:text="5"
-                android:textColor="@color/black"
+                android:textColor="?attr/actionMenuTextColor"
                 android:textSize="36sp" />
 
             <Button
@@ -197,7 +197,7 @@
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:text="6"
-                android:textColor="@color/black"
+                android:textColor="?attr/actionMenuTextColor"
                 android:textSize="36sp" />
 
             <Button
@@ -209,7 +209,7 @@
                 app:icon="@drawable/ic_baseline_remove_24"
                 app:iconGravity="textStart"
                 app:iconSize="36dp"
-                app:iconTint="@color/black" />
+                app:iconTint="?attr/actionMenuTextColor" />
 
         </LinearLayout>
 
@@ -229,7 +229,7 @@
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:text="1"
-                android:textColor="@color/black"
+                android:textColor="?attr/actionMenuTextColor"
                 android:textSize="36sp" />
 
             <Button
@@ -239,7 +239,7 @@
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:text="2"
-                android:textColor="@color/black"
+                android:textColor="?attr/actionMenuTextColor"
                 android:textSize="36sp" />
 
             <Button
@@ -249,7 +249,7 @@
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:text="3"
-                android:textColor="@color/black"
+                android:textColor="?attr/actionMenuTextColor"
                 android:textSize="36sp" />
 
             <Button
@@ -261,7 +261,7 @@
                 app:icon="@drawable/ic_baseline_add_24"
                 app:iconGravity="textStart"
                 app:iconSize="36dp"
-                app:iconTint="@color/black" />
+                app:iconTint="?attr/actionMenuTextColor" />
 
         </LinearLayout>
 
@@ -276,12 +276,12 @@
                 android:id="@+id/btnAnother"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="0.3"
                 android:background="@android:color/transparent"
                 android:text="Another\nsum"
                 android:textAllCaps="false"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textColor="?attr/actionMenuTextColor"
+                android:textSize="15sp" />
 
             <Button
                 android:id="@+id/btn0"
@@ -290,7 +290,7 @@
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:text="0"
-                android:textColor="@color/black"
+                android:textColor="?attr/actionMenuTextColor"
                 android:textSize="36sp" />
 
             <Button
@@ -300,7 +300,7 @@
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:text="."
-                android:textColor="@color/black"
+                android:textColor="?attr/actionMenuTextColor"
                 android:textSize="36sp" />
 
             <Button
@@ -312,7 +312,7 @@
                 app:icon="@drawable/ic_baseline_done_24"
                 app:iconGravity="textStart"
                 app:iconSize="36dp"
-                app:iconTint="@color/black" />
+                app:iconTint="?attr/actionMenuTextColor" />
 
         </LinearLayout>
     </LinearLayout>

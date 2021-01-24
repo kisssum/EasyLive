@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.get
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -56,6 +57,7 @@ class TabControlFragment : Fragment() {
                 else -> SettingMainFragment()
             }
         }
+        binding.viewPager.getChildAt(0).overScrollMode=View.OVER_SCROLL_NEVER
 
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab: TabLayout.Tab, i: Int ->
             tab.text = when (i) {

@@ -86,11 +86,14 @@
         android:id="@+id/tNotes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/border_style"
         android:ellipsize="end"
         android:hint="笔记"
         android:inputType="textPersonName"
         android:maxLength="140"
         android:maxLines="3"
+        android:padding="10dp"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -101,6 +104,7 @@
         android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:text="1月2日 11:08"
         app:layout_constraintEnd_toEndOf="parent"
@@ -281,7 +285,8 @@
                 android:text="Another\nsum"
                 android:textAllCaps="false"
                 android:textColor="?attr/actionMenuTextColor"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/btn0"

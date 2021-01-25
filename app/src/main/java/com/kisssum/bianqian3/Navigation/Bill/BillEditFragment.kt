@@ -3,20 +3,23 @@ package com.kisssum.bianqian3.Navigation.Bill
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.DialogInterface
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.kisssum.bianqian3.Data.Entity.Bill
 import com.kisssum.bianqian3.R
 import com.kisssum.bianqian3.databinding.FragmentBillEditBinding
 import java.util.*
-import kotlin.math.floor
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -64,6 +67,12 @@ class BillEditFragment() : Fragment(), View.OnClickListener {
         initBtn()
     }
 
+    private fun hideInput() {
+        val imm = requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager?
+        val v = requireActivity().window.peekDecorView()
+        imm?.hideSoftInputFromWindow(v.windowToken, 0)
+    }
+
     private fun restoreOrinit() {
         // 连接viewModel
         billViewModel = ViewModelProvider(
@@ -98,6 +107,7 @@ class BillEditFragment() : Fragment(), View.OnClickListener {
         // 返回按钮
         binding.btnCancel.setOnClickListener {
             Navigation.findNavController(requireActivity(), R.id.fragment_main).navigateUp()
+            hideInput()
         }
 
         // 选择类型
@@ -159,6 +169,7 @@ class BillEditFragment() : Fragment(), View.OnClickListener {
                         }, hour, minute, true
                     ).show()
                 }
+                .setNeutralButton("cancel") { dialogInterface: DialogInterface, i: Int -> }
                 .create()
                 .show()
         }
@@ -177,6 +188,7 @@ class BillEditFragment() : Fragment(), View.OnClickListener {
             billViewModel.update()
             Toast.makeText(requireContext(), "账单已保存", Toast.LENGTH_SHORT).show()
             Navigation.findNavController(requireActivity(), R.id.fragment_main).navigateUp()
+            hideInput()
         }
 
         binding.btn0.setOnClickListener(this)

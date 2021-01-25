@@ -11,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
@@ -39,10 +38,9 @@ class BillEditFragment() : Fragment(), View.OnClickListener {
     private lateinit var binding: FragmentBillEditBinding
     private lateinit var billViewModel: BillViewModel
     private lateinit var bill: Bill
-    private var price = 0.0
-    private var price2 = 0.0
     private var ch = ""
     private var uid = -1
+    private var price = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,7 +87,7 @@ class BillEditFragment() : Fragment(), View.OnClickListener {
 
         // 金额
         binding.tPrice.text = bill.price.toString()
-        price3 = if (bill.price.toString() == "0.0") ""
+        price = if (bill.price.toString() == "0.0") ""
         else bill.price.toString()
 
         // 笔记
@@ -174,22 +172,7 @@ class BillEditFragment() : Fragment(), View.OnClickListener {
                 .show()
         }
 
-        binding.btnDone.setOnClickListener {
-            bill.price = if (price3 == "") 0.0
-            else price3.toDouble()
-
-            bill.notes = binding.tNotes.text.toString()
-
-            val billDao = billViewModel.getBillDao()
-            if (uid == -1) billDao.inserts(bill)
-            else billDao.updates(bill)
-
-            // 更新数据并返回
-            billViewModel.update()
-            Toast.makeText(requireContext(), "账单已保存", Toast.LENGTH_SHORT).show()
-            Navigation.findNavController(requireActivity(), R.id.fragment_main).navigateUp()
-            hideInput()
-        }
+        binding.btnDone.setOnClickListener { save() }
 
         binding.btn0.setOnClickListener(this)
         binding.btn1.setOnClickListener(this)
@@ -204,160 +187,90 @@ class BillEditFragment() : Fragment(), View.OnClickListener {
         binding.btnCut.setOnClickListener(this)
         binding.btnLess.setOnClickListener(this)
         binding.btnPlus.setOnClickListener(this)
+        binding.btnOK.setOnClickListener(this)
     }
 
-    private var price3 = ""
-    private var chs = ""
+    private fun save() {
+        bill.price = if (price == "") 0.0 else price.toDouble()
+        bill.notes = binding.tNotes.text.toString()
+
+        val billDao = billViewModel.getBillDao()
+        if (uid == -1) billDao.inserts(bill) else billDao.updates(bill)
+
+        // 更新数据并返回
+        billViewModel.update()
+
+        Toast.makeText(requireContext(), "账单已保存", Toast.LENGTH_SHORT).show()
+        Navigation.findNavController(requireActivity(), R.id.fragment_main).navigateUp()
+        hideInput()
+    }
+
+    private fun calPriceLen(v: View) {
+        if (price.length >= 8) {
+            Toast.makeText(requireContext(), "已超过最大字符数", Toast.LENGTH_SHORT).show()
+            return
+        } else {
+            price += (v as Button).text.toString()
+        }
+    }
+
+    private fun calPrice(v: View) {
+        // 判断price不是“” - +
+        if (price != "" && price.last() != '-' && price.last() != '+') {
+            // 如果ch为空就给符号
+            if (ch == "") {
+                ch = if ((v as Button).id == R.id.btnLess) "-" else "+"
+                price += ch
+            } else {
+                // 计算
+                val list = price.split(ch)
+
+                price = when (ch) {
+                    "-" -> {
+                        // 两个正数
+                        if (list.size == 2)
+                            (list[0].toDouble() - list[1].toDouble()).toString()
+                        // 第一个数负数
+                        else
+                            (-list[1].toDouble() - list[2].toDouble()).toString()
+                    }
+                    else -> {
+                        // 两个正数
+                        if (list.size == 2)
+                            (list[0].toDouble() + list[1].toDouble()).toString()
+                        // 第一个数负数
+                        else
+                            (-list[1].toDouble() + list[2].toDouble()).toString()
+                    }
+                }
+
+                ch = ""
+            }
+        }
+    }
 
     override fun onClick(v: View?) {
-        when (v?.id) {
+        when (v!!.id) {
             R.id.btn0 -> {
-                if (price3 == "")
-                    return
-
-                if (price3.length >= 8) {
-                    Toast.makeText(requireContext(), "已超过最大字符数", Toast.LENGTH_SHORT).show()
-                    return
-                } else {
-                    price3 += (v as Button).text.toString()
-                }
+                if (price == "") return else calPriceLen(v)
             }
             R.id.btn1, R.id.btn2, R.id.btn3,
             R.id.btn4, R.id.btn5, R.id.btn6,
             R.id.btn7, R.id.btn8, R.id.btn9 -> {
-                if (price3.length >= 8) {
-                    Toast.makeText(requireContext(), "已超过最大字符数", Toast.LENGTH_SHORT).show()
-                    return
-                } else {
-                    price3 += (v as Button).text.toString()
-                }
+                calPriceLen(v)
             }
             R.id.btnCut -> {
-                if (price3 != "") price3 = price3.substring(0, price3.length - 1)
+                if (price != "") price = price.substring(0, price.length - 1)
             }
             R.id.btnLess, R.id.btnPlus -> {
-                // 判断price3不是“” - +
-                if (price3 != "" && price3.last() != '-' && price3.last() != '+') {
-                    // 如果chs为空就给符号
-                    if (chs == "") {
-                        chs = if ((v as Button).id == R.id.btnLess)
-                            "-"
-                        else
-                            "+"
-
-                        price3 += chs
-                    } else {
-                        // 计算
-                        val list = price3.split(chs)
-
-                        price3 = if (chs == "-") {
-                            // 两个正数
-                            if (list.size == 2)
-                                (list[0].toDouble() - list[1].toDouble()).toString()
-                            // 第一个数负数
-                            else
-                                (-list[1].toDouble() - list[2].toDouble()).toString()
-                        } else {
-                            // 两个正数
-                            if (list.size == 2)
-                                (list[0].toDouble() + list[1].toDouble()).toString()
-                            // 第一个数负数
-                            else
-                                (-list[1].toDouble() + list[2].toDouble()).toString()
-                        }
-
-                        chs = ""
-                    }
-                }
+                calPrice(v)
+            }
+            R.id.btnOK -> {
+                save()
             }
         }
 
-        binding.tPrice.text = if (price3 == "") "0.0"
-        else price3
-
-//        when (v?.id) {
-//            R.id.btn0 -> {
-//                // 判断字符长度是否超过8位
-//                if (price.toString().length >= 10
-//                    || price2.toString().length >= 10
-//                ) {
-//                    Toast.makeText(requireContext(), "已超过最大字符数", Toast.LENGTH_SHORT).show()
-//                    return
-//                } else {
-//                    if (price2 != 0.0)
-//                        price2 *= 10
-//                    else
-//                        price *= 10
-//                }
-//            }
-//            R.id.btn1, R.id.btn2, R.id.btn3,
-//            R.id.btn4, R.id.btn5, R.id.btn6,
-//            R.id.btn7, R.id.btn8, R.id.btn9 -> {
-//                // 判断字符长度是否超过8位
-//                if (price.toString().length >= 10
-//                    || price2.toString().length >= 10
-//                ) {
-//                    Toast.makeText(requireContext(), "已超过最大字符数", Toast.LENGTH_SHORT).show()
-//                    return
-//                } else {
-//                    // 计算
-//                    val number = (v as Button).text.toString().toInt()
-//
-//                    if (ch == "") {
-//                        price = if (price == 0.0) number * 1.0
-//                        else price * 10 + number
-//                    } else {
-//                        price2 = if (price2 == 0.0) number * 1.0
-//                        else price2 * 10 + number
-//                    }
-//                }
-//            }
-//            R.id.btnCut -> {
-//                if (ch == "") price = floor(price / 10)
-//                else {
-//                    if (price2 == 0.0) ch = ""
-//                    else price2 = floor(price2 / 10)
-//                }
-//            }
-//            R.id.btnLess -> {
-//                if (price == 0.0) return
-//
-//                if (ch == "") ch = "-"
-//                else {
-//                    if (ch == "-") price -= price2
-//                    else if (ch == "+") price += price2
-//                    price2 = 0.0
-//                    ch = ""
-//                }
-//            }
-//            R.id.btnPlus -> {
-//                if (price == 0.0) return
-//
-//                if (ch == "") ch = "+"
-//                else {
-//                    if (ch == "-") price -= price2
-//                    else if (ch == "+") price += price2
-//                    price2 = 0.0
-//                    ch = ""
-//                }
-//            }
-//            else -> 0.0
-//        }
-//
-//        // 显示
-//        val oneNumber =
-//            if (price == 0.0) price.toString()
-//            else if (price == floor(price) && price != 0.0) price.toInt().toString()
-//            else price.toString()
-//
-//        val twoNumber =
-//            if (price2 == 0.0) ""
-//            else if (price2 == floor(price2) && price2 != 0.0) price2.toInt().toString()
-//            else price2.toString()
-//
-//        binding.tPrice.text =
-//            if (ch == "") oneNumber
-//            else oneNumber + ch + twoNumber
+        binding.tPrice.text = if (price == "") "0.0" else price
     }
 
     companion object {

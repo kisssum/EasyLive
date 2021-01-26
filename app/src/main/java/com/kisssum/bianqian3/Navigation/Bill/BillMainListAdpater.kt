@@ -12,10 +12,11 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.kisssum.bianqian3.Data.Entity.Bill
+import com.kisssum.bianqian3.Navigation.ViewModel
 import com.kisssum.bianqian3.R
 import java.util.*
 
-class BillMainListAdpater(val context: Context, val billViewModel: BillViewModel) :
+class BillMainListAdpater(val context: Context, val viewModel: ViewModel) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var data: List<Bill>? = null
     private val NO_TITLE = 0
@@ -135,8 +136,8 @@ class BillMainListAdpater(val context: Context, val billViewModel: BillViewModel
 
         holder.itemView.setOnLongClickListener {
             Snackbar.make(it, "是否删除?", Snackbar.LENGTH_SHORT).setAction("确定") {
-                billViewModel.getBillDao().dels(bill)
-                billViewModel.update()
+                viewModel.getBillDao().dels(bill)
+                viewModel.reLoadBillData()
             }.show()
             true
         }

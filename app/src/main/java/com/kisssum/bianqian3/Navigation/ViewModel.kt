@@ -11,11 +11,16 @@ import com.kisssum.bianqian3.Data.Entity.Meno
 
 class ViewModel(application: Application) : AndroidViewModel(application) {
     private var menoData: MutableLiveData<List<Meno>> = MutableLiveData()
+    private var billData: MutableLiveData<List<Bill>> = MutableLiveData()
     private val menoDB =
         Room.databaseBuilder(application, MenoDatabase::class.java, "meno").allowMainThreadQueries()
             .build()
+    private val billDB =
+        Room.databaseBuilder(application, BillDatabase::class.java, "bill").allowMainThreadQueries()
+            .build()
 
     init {
+        reLoadBillData()
         reLoadMenoData()
     }
 
@@ -25,21 +30,9 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         menoData.value = menoDB.menoDao().getAll()
     }
 
-//    private var billData: MutableLiveData<List<Bill>> = MutableLiveData()
-//    private val db =
-//        Room.databaseBuilder(application, BillDatabase::class.java, "bill").allowMainThreadQueries()
-//            .build()
-//    private val billDao = db.billDao()
-//
-//    init {
-//        update()
-//    }
-//
-//    fun getBillData() = billData
-//
-//    fun update() {
-//        billData.value = billDao.getAll()
-//    }
-//
-//    fun getBillDao() = billDao
+    fun getBillData() = billData
+    fun getBillDao() = billDB.billDao()
+    fun reLoadBillData() {
+        billData.value = billDB.billDao().getAll()
+    }
 }

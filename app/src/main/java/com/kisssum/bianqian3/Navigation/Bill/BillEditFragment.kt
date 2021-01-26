@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.kisssum.bianqian3.Data.Entity.Bill
+import com.kisssum.bianqian3.Navigation.ViewModel
 import com.kisssum.bianqian3.R
 import com.kisssum.bianqian3.databinding.FragmentBillEditBinding
 import java.util.*
@@ -36,7 +37,7 @@ class BillEditFragment() : Fragment(), View.OnClickListener {
     private var param2: String? = null
 
     private lateinit var binding: FragmentBillEditBinding
-    private lateinit var billViewModel: BillViewModel
+    private lateinit var viewModel: ViewModel
     private lateinit var bill: Bill
     private var ch = ""
     private var uid = -1
@@ -73,17 +74,17 @@ class BillEditFragment() : Fragment(), View.OnClickListener {
 
     private fun restoreOrinit() {
         // 连接viewModel
-        billViewModel = ViewModelProvider(
+        viewModel = ViewModelProvider(
             requireActivity(),
             ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
-        ).get(BillViewModel::class.java)
+        ).get(ViewModel::class.java)
 
         // 获取uid，-1为新建账单,其它为还原账单
         uid = if (arguments == null) -1
         else arguments?.getInt("uid")!!
 
         bill = if (uid == -1) Bill()
-        else billViewModel.getBillDao().findBill(uid)
+        else viewModel.getBillDao().findBill(uid)
 
         // 金额
         binding.tPrice.text = bill.price.toString()
@@ -194,11 +195,11 @@ class BillEditFragment() : Fragment(), View.OnClickListener {
         bill.price = if (price == "") 0.0 else price.toDouble()
         bill.notes = binding.tNotes.text.toString()
 
-        val billDao = billViewModel.getBillDao()
+        val billDao = viewModel.getBillDao()
         if (uid == -1) billDao.inserts(bill) else billDao.updates(bill)
 
         // 更新数据并返回
-        billViewModel.update()
+        viewModel.reLoadBillData()
 
         Toast.makeText(requireContext(), "账单已保存", Toast.LENGTH_SHORT).show()
         Navigation.findNavController(requireActivity(), R.id.fragment_main).navigateUp()

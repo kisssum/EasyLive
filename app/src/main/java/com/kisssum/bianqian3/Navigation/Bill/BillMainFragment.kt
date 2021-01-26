@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.kisssum.bianqian3.Navigation.ViewModel
 import com.kisssum.bianqian3.R
 import com.kisssum.bianqian3.databinding.FragmentBillMainBinding
 
@@ -28,7 +29,7 @@ class BillMainFragment : Fragment() {
 
     private lateinit var binding: FragmentBillMainBinding
     private lateinit var adpater: BillMainListAdpater
-    private lateinit var billViewModel: BillViewModel
+    private lateinit var viewModel: ViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,14 +55,14 @@ class BillMainFragment : Fragment() {
     }
 
     private fun initBinding() {
-        billViewModel = ViewModelProvider(
+        viewModel = ViewModelProvider(
             requireActivity(),
             ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
-        ).get(BillViewModel::class.java)
+        ).get(ViewModel::class.java)
 
-        adpater = BillMainListAdpater(requireContext(), billViewModel)
+        adpater = BillMainListAdpater(requireContext(), viewModel)
 
-        billViewModel.getBillData().observe(requireActivity()) {
+        viewModel.getBillData().observe(requireActivity()) {
             adpater.updateData(it)
             binding.list.adapter = adpater
         }

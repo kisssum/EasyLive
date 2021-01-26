@@ -8,9 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import com.kisssum.bianqian3.Navigation.Bill.BillViewModel
-import com.kisssum.bianqian3.R
-import com.kisssum.bianqian3.databinding.FragmentBillMainBinding
+import com.kisssum.bianqian3.Navigation.ViewModel
 import com.kisssum.bianqian3.databinding.FragmentSettingMainBinding
 
 // TODO: Rename parameter arguments, choose names that match
@@ -29,7 +27,7 @@ class SettingMainFragment : Fragment() {
     private var param2: String? = null
 
     private lateinit var binding: FragmentSettingMainBinding
-    private lateinit var billViewModel: BillViewModel
+    private lateinit var viewModel: ViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,17 +48,17 @@ class SettingMainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        billViewModel = ViewModelProvider(
+        viewModel = ViewModelProvider(
             requireActivity(),
             ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
-        ).get(BillViewModel::class.java)
+        ).get(viewModel::class.java)
 
         binding.btnClearBill.setOnClickListener {
             AlertDialog.Builder(requireContext())
                 .setMessage("是否删除所有账单?")
                 .setPositiveButton("确认") { dialogInterface: DialogInterface, i: Int ->
-                    billViewModel.getBillDao().delAll()
-                    billViewModel.update()
+                    viewModel.getBillDao().delAll()
+                    viewModel.reLoadBillData()
                 }
                 .setNeutralButton("取消") { dialogInterface: DialogInterface, i: Int -> }
                 .create()

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.kisssum.bianqian3.Data.Entity.Meno
 import com.kisssum.bianqian3.Navigation.ViewModel
 import com.kisssum.bianqian3.R
@@ -29,9 +30,11 @@ class MenoAdpater(val context: Context, val viewModel: ViewModel) :
     }
 
     override fun onBindViewHolder(holder: DefaultViewHolder, position: Int) {
-        holder.title.text = data?.get(position)?.title.toString()
+        val meno = data?.get(position)
 
-        val lastTime = data?.get(position)?.lastTime
+        holder.title.text = meno?.title.toString()
+
+        val lastTime = meno?.lastTime
         val c = Calendar.getInstance()
         c.timeInMillis = lastTime!!
         holder.time.text =
@@ -39,10 +42,18 @@ class MenoAdpater(val context: Context, val viewModel: ViewModel) :
 
         holder.itemView.setOnClickListener {
             val bundle = Bundle()
-            bundle.putInt("uid", data?.get(position)!!.uid)
+            bundle.putInt("uid", meno!!.uid)
 
             Navigation.findNavController(context as Activity, R.id.fragment_main)
-                .navigate(R.id.action_tabControlFragment_to_menoEditFragment,bundle)
+                .navigate(R.id.action_tabControlFragment_to_menoEditFragment, bundle)
+        }
+
+        holder.itemView.setOnLongClickListener {
+            Snackbar.make(it, "是否删除?", Snackbar.LENGTH_SHORT).setAction("确定") {
+                viewModel.getMenoDao().deletes(meno)
+                viewModel.reLoadMenoData()
+            }.show()
+            true
         }
     }
 

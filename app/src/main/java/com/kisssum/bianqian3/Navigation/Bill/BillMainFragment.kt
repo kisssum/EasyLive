@@ -28,7 +28,7 @@ class BillMainFragment : Fragment() {
     private var param2: String? = null
 
     private lateinit var binding: FragmentBillMainBinding
-    private lateinit var adpater: BillMainListAdpater
+    private lateinit var adpater: BillAdpater
     private lateinit var viewModel: ViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,7 +60,7 @@ class BillMainFragment : Fragment() {
             ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
         ).get(ViewModel::class.java)
 
-        adpater = BillMainListAdpater(requireContext(), viewModel)
+        adpater = BillAdpater(requireContext(), viewModel)
 
         viewModel.getBillData().observe(requireActivity()) {
             adpater.updateData(it)

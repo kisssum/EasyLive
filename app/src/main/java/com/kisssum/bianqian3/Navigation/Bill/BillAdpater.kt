@@ -16,7 +16,7 @@ import com.kisssum.bianqian3.Navigation.ViewModel
 import com.kisssum.bianqian3.R
 import java.util.*
 
-class BillMainListAdpater(val context: Context, val viewModel: ViewModel) :
+class BillAdpater(val context: Context, val viewModel: ViewModel) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var data: List<Bill>? = null
     private val NO_TITLE = 0

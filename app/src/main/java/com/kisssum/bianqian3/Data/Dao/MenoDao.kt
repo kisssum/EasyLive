@@ -14,6 +14,9 @@ interface MenoDao {
     @Query("select * from meno where uid=:id")
     fun findMeno(id: Int): Meno
 
+    @Query("delete from meno")
+    fun delAll()
+
     @Insert
     fun inserts(vararg meno: Meno)
 

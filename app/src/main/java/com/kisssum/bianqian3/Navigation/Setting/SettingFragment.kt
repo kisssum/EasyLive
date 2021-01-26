@@ -9,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.kisssum.bianqian3.Navigation.ViewModel
-import com.kisssum.bianqian3.databinding.FragmentSettingMainBinding
+import com.kisssum.bianqian3.databinding.FragmentSettingBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,12 +21,12 @@ private const val ARG_PARAM2 = "param2"
  * Use the [SettingMainFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class SettingMainFragment : Fragment() {
+class SettingFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
 
-    private lateinit var binding: FragmentSettingMainBinding
+    private lateinit var binding: FragmentSettingBinding
     private lateinit var viewModel: ViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +41,7 @@ class SettingMainFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentSettingMainBinding.inflate(inflater)
+        binding = FragmentSettingBinding.inflate(inflater)
         return binding.root
     }
 
@@ -51,7 +51,7 @@ class SettingMainFragment : Fragment() {
         viewModel = ViewModelProvider(
             requireActivity(),
             ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
-        ).get(viewModel::class.java)
+        ).get(ViewModel::class.java)
 
         binding.btnClearBill.setOnClickListener {
             AlertDialog.Builder(requireContext())
@@ -59,6 +59,18 @@ class SettingMainFragment : Fragment() {
                 .setPositiveButton("确认") { dialogInterface: DialogInterface, i: Int ->
                     viewModel.getBillDao().delAll()
                     viewModel.reLoadBillData()
+                }
+                .setNeutralButton("取消") { dialogInterface: DialogInterface, i: Int -> }
+                .create()
+                .show()
+        }
+
+        binding.btnClearMeno.setOnClickListener {
+            AlertDialog.Builder(requireContext())
+                .setMessage("是否删除所有账单?")
+                .setPositiveButton("确认") { dialogInterface: DialogInterface, i: Int ->
+                    viewModel.getMenoDao().delAll()
+                    viewModel.reLoadMenoData()
                 }
                 .setNeutralButton("取消") { dialogInterface: DialogInterface, i: Int -> }
                 .create()
@@ -78,7 +90,7 @@ class SettingMainFragment : Fragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            SettingMainFragment().apply {
+            SettingFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

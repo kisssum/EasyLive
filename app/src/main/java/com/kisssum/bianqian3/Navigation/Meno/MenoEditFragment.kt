@@ -12,6 +12,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import com.google.android.material.snackbar.Snackbar
 import com.kisssum.bianqian3.Data.Entity.Meno
 import com.kisssum.bianqian3.Navigation.ViewModel
 import com.kisssum.bianqian3.R
@@ -128,6 +129,21 @@ class MenoEditFragment : Fragment() {
 
         binding.menoEditText.addTextChangedListener {
             binding.menoEditLength.text = "| ${binding.menoEditText.text.length}字"
+        }
+
+        binding.menoEditTime.setOnClickListener {
+            val createTime = Calendar.getInstance()
+            createTime.timeInMillis = meno.createTime
+
+            val lastTime = Calendar.getInstance()
+            lastTime.timeInMillis = meno.lastTime
+
+            Snackbar.make(
+                requireView(),
+                "创建日期:${createTime[Calendar.YEAR]}年${createTime[Calendar.MONTH] + 1}月${createTime[Calendar.DAY_OF_MONTH]}日 ${createTime[Calendar.HOUR_OF_DAY]}:${createTime[Calendar.MINUTE]}" +
+                        "\n修改日期:${lastTime[Calendar.YEAR]}年${lastTime[Calendar.MONTH] + 1}月${lastTime[Calendar.DAY_OF_MONTH]}日 ${lastTime[Calendar.HOUR_OF_DAY]}:${lastTime[Calendar.MINUTE]}",
+                Snackbar.LENGTH_SHORT
+            ).show()
         }
     }
 

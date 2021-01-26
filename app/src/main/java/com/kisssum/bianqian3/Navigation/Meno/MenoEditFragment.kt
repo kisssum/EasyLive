@@ -1,14 +1,15 @@
 package com.kisssum.bianqian3.Navigation.Meno
 
-import android.content.Context
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.kisssum.bianqian3.Data.Entity.Meno
@@ -16,6 +17,7 @@ import com.kisssum.bianqian3.Navigation.ViewModel
 import com.kisssum.bianqian3.R
 import com.kisssum.bianqian3.databinding.FragmentMenoEditBinding
 import java.util.*
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -62,21 +64,33 @@ class MenoEditFragment : Fragment() {
     }
 
     private fun restoreOrinit() {
+        // 获取id
         uid = if (arguments == null) -1
         else arguments?.getInt("uid", -1)!!
 
+        // 新建或找到已有meno
         meno = if (uid == -1) Meno()
         else viewModel.getMenoDao().findMeno(uid)
 
+        // 填充数据
         binding.menoEditTitle.setText(meno.title)
         binding.menoEditText.setText(meno.text)
-
         val c = Calendar.getInstance()
         c.timeInMillis = meno.lastTime
         binding.menoEditTime.text =
             "${c[Calendar.YEAR]}年${c[Calendar.MONTH] + 1}月${c[Calendar.DAY_OF_MONTH]}日" +
                     "${c[Calendar.HOUR_OF_DAY]}:${c[Calendar.MINUTE]}" +
                     " 周${c[Calendar.DAY_OF_WEEK] - 1}"
+
+        // 焦点和屏幕键盘
+        if (uid == -1) {
+            binding.menoEditTitle.clearFocus()
+            binding.menoEditText.requestFocus()
+            showInput(binding.menoEditText)
+        } else {
+            binding.menoEditTitle.clearFocus()
+            binding.menoEditText.clearFocus()
+        }
     }
 
     private fun initBinding() {
@@ -141,9 +155,15 @@ class MenoEditFragment : Fragment() {
 
     private fun hideInput() {
         val imm =
-            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+            requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager?
         val v = requireActivity().window.peekDecorView()
         imm?.hideSoftInputFromWindow(v.windowToken, 0)
+    }
+
+    private fun showInput(et: EditText) {
+        et.requestFocus()
+        val imm = requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager?
+        imm!!.showSoftInput(et, InputMethodManager.SHOW_IMPLICIT)
     }
 
     companion object {

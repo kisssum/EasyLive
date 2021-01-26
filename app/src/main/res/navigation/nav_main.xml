@@ -17,10 +17,22 @@
             app:exitAnim="@anim/translate_x_0_to_f100"
             app:popEnterAnim="@anim/translate_x_f100_to_0"
             app:popExitAnim="@anim/translate_x_0_to_100" />
+        <action
+            android:id="@+id/action_tabControlFragment_to_menoEditFragment"
+            app:destination="@id/menoEditFragment"
+            app:enterAnim="@anim/translate_x_100_to_0"
+            app:exitAnim="@anim/translate_x_0_to_f100"
+            app:popEnterAnim="@anim/translate_x_f100_to_0"
+            app:popExitAnim="@anim/translate_x_0_to_100" />
     </fragment>
     <fragment
         android:id="@+id/billEditFragment"
         android:name="com.kisssum.bianqian3.Navigation.Bill.BillEditFragment"
         android:label="fragment_bill_edit"
         tools:layout="@layout/fragment_bill_edit" />
+    <fragment
+        android:id="@+id/menoEditFragment"
+        android:name="com.kisssum.bianqian3.Navigation.Meno.MenoEditFragment"
+        android:label="fragment_meno_edit"
+        tools:layout="@layout/fragment_meno_edit" />
 </navigation>

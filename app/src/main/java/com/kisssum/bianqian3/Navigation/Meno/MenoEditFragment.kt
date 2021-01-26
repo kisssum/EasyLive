@@ -5,9 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.Navigation
 import com.kisssum.bianqian3.R
-import com.kisssum.bianqian3.databinding.FragmentMenoMainBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -16,15 +14,13 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [MenoMainFragment.newInstance] factory method to
+ * Use the [MenoEditFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class MenoMainFragment : Fragment() {
+class MenoEditFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-
-    private lateinit var binding: FragmentMenoMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,22 +33,9 @@ class MenoMainFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentMenoMainBinding.inflate(inflater)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        initView()
-    }
-
-    private fun initView() {
-        binding.menoBtnPlus.setOnClickListener {
-            Navigation.findNavController(requireActivity(), R.id.fragment_main)
-                .navigate(R.id.action_tabControlFragment_to_menoEditFragment)
-        }
+    ): View? {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_meno_edit, container, false)
     }
 
     companion object {
@@ -62,12 +45,12 @@ class MenoMainFragment : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment MenoMainFragment.
+         * @return A new instance of fragment MenoEditFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            MenoMainFragment().apply {
+            MenoEditFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

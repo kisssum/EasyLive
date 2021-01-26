@@ -5,7 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.kisssum.bianqian3.Navigation.ViewModel
 import com.kisssum.bianqian3.R
 import com.kisssum.bianqian3.databinding.FragmentMenoMainBinding
 
@@ -25,6 +28,8 @@ class MenoMainFragment : Fragment() {
     private var param2: String? = null
 
     private lateinit var binding: FragmentMenoMainBinding
+    private lateinit var viewModel: ViewModel
+    private lateinit var listAdpater: MenoAdpater
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,10 +50,28 @@ class MenoMainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initBinding()
         initView()
     }
 
+    private fun initBinding() {
+        viewModel = ViewModelProvider(
+            requireActivity(),
+            ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
+        ).get(ViewModel::class.java)
+
+        listAdpater = MenoAdpater(requireActivity(), viewModel)
+
+        viewModel.getMenoData().observe(requireActivity()) {
+            listAdpater.refreshData(it)
+            binding.menoList.adapter = listAdpater
+        }
+    }
+
     private fun initView() {
+        binding.menoList.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+
         binding.menoBtnPlus.setOnClickListener {
             Navigation.findNavController(requireActivity(), R.id.fragment_main)
                 .navigate(R.id.action_tabControlFragment_to_menoEditFragment)

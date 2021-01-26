@@ -8,6 +8,12 @@ interface MenoDao {
     @Query("select * from meno order by lastTime desc")
     fun getAll(): List<Meno>
 
+    @Query("select count(*) from meno")
+    fun getCount(): Long
+
+    @Query("select * from meno where uid=:id")
+    fun findMeno(id: Int): Meno
+
     @Insert
     fun inserts(vararg meno: Meno)
 

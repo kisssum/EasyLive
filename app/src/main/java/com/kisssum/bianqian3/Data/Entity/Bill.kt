@@ -17,7 +17,7 @@ data class Bill(
     var type: Int = 0,
 
     @ColumnInfo(name = "time")
-    var time: Long = Calendar.getInstance().timeInMillis,
+    var time: Long = Calendar.getInstance().timeInMillis
 ) {
     @PrimaryKey(autoGenerate = true)
     var uid: Int = 0

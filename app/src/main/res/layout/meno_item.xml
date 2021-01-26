@@ -18,12 +18,20 @@
             android:id="@+id/menoShowTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:ellipsize="end"
+            android:maxEms="14"
+            android:maxLines="1"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="10dp"
+            android:text="标题"
+            android:textColor="?android:attr/panelColorForeground"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/menoShowTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="时间" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

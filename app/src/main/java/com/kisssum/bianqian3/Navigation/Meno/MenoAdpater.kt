@@ -30,24 +30,45 @@ class MenoAdpater(val context: Context, val viewModel: ViewModel) :
     }
 
     override fun onBindViewHolder(holder: DefaultViewHolder, position: Int) {
+        // 获取对应meno
         val meno = data?.get(position)
 
-        holder.title.text = meno?.title.toString()
+        // 是否用内容替代标题
+        if (meno?.title.toString() != "") {
+            holder.title.text = meno?.title.toString()
+        } else {
+            holder.title.text = meno?.text.toString()
+        }
 
+        // 时间显示
         val lastTime = meno?.lastTime
         val c = Calendar.getInstance()
+        val newC = Calendar.getInstance()
         c.timeInMillis = lastTime!!
-        holder.time.text =
-            "${c[Calendar.YEAR]}年${c[Calendar.MONTH] + 1}月${c[Calendar.DAY_OF_MONTH]}日"
+        holder.time.text = when {
+            (c[Calendar.YEAR] == newC[Calendar.YEAR] && c[Calendar.MONTH] == newC[Calendar.MONTH] && c[Calendar.DAY_OF_MONTH] == newC[Calendar.DAY_OF_MONTH]) -> {
+                "${c[Calendar.HOUR_OF_DAY]}:${c[Calendar.MINUTE]}"
+            }
+            (c[Calendar.YEAR] == newC[Calendar.YEAR] && c[Calendar.MONTH] == newC[Calendar.MONTH] && c[Calendar.DAY_OF_MONTH] != newC[Calendar.DAY_OF_MONTH])
+                    || (c[Calendar.YEAR] == newC[Calendar.YEAR] && c[Calendar.MONTH] != newC[Calendar.MONTH]) -> {
+                "${c[Calendar.MONTH] + 1}月${c[Calendar.DAY_OF_MONTH]}日"
+            }
+            (c[Calendar.YEAR] != newC[Calendar.YEAR]) -> {
+                "${c[Calendar.YEAR]}年${c[Calendar.MONTH] + 1}月${c[Calendar.DAY_OF_MONTH]}日"
+            }
+            else -> ""
+        }
 
+        // 单击
         holder.itemView.setOnClickListener {
             val bundle = Bundle()
-            bundle.putInt("uid", meno!!.uid)
+            bundle.putInt("uid", meno.uid)
 
             Navigation.findNavController(context as Activity, R.id.fragment_main)
                 .navigate(R.id.action_tabControlFragment_to_menoEditFragment, bundle)
         }
 
+        // 长按
         holder.itemView.setOnLongClickListener {
             Snackbar.make(it, "是否删除?", Snackbar.LENGTH_SHORT).setAction("确定") {
                 viewModel.getMenoDao().deletes(meno)

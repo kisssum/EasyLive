@@ -2,14 +2,13 @@ package com.kisssum.bianqian3.Navigation.Meno
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.lifecycle.AndroidViewModel
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.kisssum.bianqian3.Data.Entity.Meno
@@ -63,16 +62,11 @@ class MenoEditFragment : Fragment() {
     }
 
     private fun restoreOrinit() {
-        uid = if (arguments == null)
-            -1
-        else
-            arguments?.getInt("uid", -1)!!
+        uid = if (arguments == null) -1
+        else arguments?.getInt("uid", -1)!!
 
-        meno = if (uid == -1) {
-            Meno()
-        } else {
-            viewModel.getMenoDao().findMeno(uid)
-        }
+        meno = if (uid == -1) Meno()
+        else viewModel.getMenoDao().findMeno(uid)
 
         binding.menoEditTitle.setText(meno.title)
         binding.menoEditText.setText(meno.text)
@@ -81,7 +75,8 @@ class MenoEditFragment : Fragment() {
         c.timeInMillis = meno.lastTime
         binding.menoEditTime.text =
             "${c[Calendar.YEAR]}年${c[Calendar.MONTH] + 1}月${c[Calendar.DAY_OF_MONTH]}日" +
-                    "${c[Calendar.HOUR_OF_DAY]}:${c[Calendar.MINUTE]}"
+                    "${c[Calendar.HOUR_OF_DAY]}:${c[Calendar.MINUTE]}" +
+                    " 周${c[Calendar.DAY_OF_WEEK] - 1}"
     }
 
     private fun initBinding() {
@@ -106,19 +101,42 @@ class MenoEditFragment : Fragment() {
                 true
             }
         }
+
+        binding.menoEditTitle.addTextChangedListener {
+            if (binding.menoEditTitle.text.toString().length == 29) {
+                Toast.makeText(requireContext(), "已达到最大字数", Toast.LENGTH_SHORT).show()
+                hideInput()
+                binding.menoEditTitle.clearFocus()
+                binding.menoEditText.requestFocus()
+                binding.menoEditText.setSelection(binding.menoEditText.text.length)
+            }
+        }
+
+        binding.menoEditText.addTextChangedListener {
+            binding.menoEditLength.text = "| ${binding.menoEditText.text.length}字"
+        }
     }
 
     private fun save() {
-        meno.title = binding.menoEditTitle.text.toString()
-        meno.lastTime = Calendar.getInstance().timeInMillis
-        meno.text = binding.menoEditText.text.toString()
+        if (binding.menoEditText.text.toString() == ""
+            && binding.menoEditTitle.text.toString() == ""
+        ) {
+            Toast.makeText(requireContext(), "内容不能为空", Toast.LENGTH_SHORT).show()
+            return
+        } else {
+            meno.title = binding.menoEditTitle.text.toString()
+            meno.lastTime = Calendar.getInstance().timeInMillis
+            meno.text = binding.menoEditText.text.toString()
 
-        viewModel.getMenoDao().inserts(meno)
-        viewModel.reLoadMenoData()
+            if (uid == -1) viewModel.getMenoDao().inserts(meno)
+            else viewModel.getMenoDao().updates(meno)
 
-        Toast.makeText(requireContext(), "Save successful", Toast.LENGTH_SHORT).show()
-        hideInput()
-        Navigation.findNavController(requireActivity(), R.id.fragment_main).navigateUp()
+            viewModel.reLoadMenoData()
+
+            Toast.makeText(requireContext(), "保存成功", Toast.LENGTH_SHORT).show()
+            hideInput()
+            Navigation.findNavController(requireActivity(), R.id.fragment_main).navigateUp()
+        }
     }
 
     private fun hideInput() {

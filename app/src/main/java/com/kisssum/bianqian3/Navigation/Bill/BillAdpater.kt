@@ -63,13 +63,13 @@ class BillAdpater(val context: Context, val viewModel: ViewModel) :
         // 根据类型判断用什么布局
         NO_TITLE -> {
             val item = LayoutInflater.from(parent.context)
-                .inflate(R.layout.bill_list_item_no_date, parent, false)
+                .inflate(R.layout.bill_item_no_title, parent, false)
 
             NoTitleViewHodel(item)
         }
         else -> {
             val item = LayoutInflater.from(parent.context)
-                .inflate(R.layout.bill_list_item_have_date, parent, false)
+                .inflate(R.layout.bill_item_have_title, parent, false)
 
             HaveTitleViewHodel(item)
         }

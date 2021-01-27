@@ -192,18 +192,22 @@ class BillEditFragment() : Fragment(), View.OnClickListener {
     }
 
     private fun save() {
-        bill.price = if (price == "") 0.0 else price.toDouble()
-        bill.notes = binding.tNotes.text.toString()
+        if (price == "" && binding.tNotes.text.toString() == "") {
+            Toast.makeText(requireContext(), "无数据，保存失败", Toast.LENGTH_SHORT).show()
+        } else {
+            bill.price = if (price == "") 0.0 else price.toDouble()
+            bill.notes = binding.tNotes.text.toString()
 
-        val billDao = viewModel.getBillDao()
-        if (uid == -1) billDao.inserts(bill) else billDao.updates(bill)
+            val billDao = viewModel.getBillDao()
+            if (uid == -1) billDao.inserts(bill) else billDao.updates(bill)
 
-        // 更新数据并返回
-        viewModel.reLoadBillData()
+            // 更新数据并返回
+            viewModel.reLoadBillData()
 
-        Toast.makeText(requireContext(), "账单已保存", Toast.LENGTH_SHORT).show()
-        Navigation.findNavController(requireActivity(), R.id.fragment_main).navigateUp()
-        hideInput()
+            Toast.makeText(requireContext(), "账单已保存", Toast.LENGTH_SHORT).show()
+            Navigation.findNavController(requireActivity(), R.id.fragment_main).navigateUp()
+            hideInput()
+        }
     }
 
     private fun calPriceLen(v: View) {

@@ -91,20 +91,15 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="深色模式"
-                android:textColor="?attr/actionMenuTextColor"
-                android:textSize="16sp" />
-
             <Switch
                 android:id="@+id/changeSwitchUiMode"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:textAlignment="textEnd" />
+                android:text="深色模式"
+                android:textAlignment="textStart"
+                android:textColor="?attr/actionMenuTextColor"
+                android:textSize="16sp" />
         </LinearLayout>
 
     </LinearLayout>

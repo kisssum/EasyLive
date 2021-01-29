@@ -1,12 +1,15 @@
 package com.kisssum.bianqian3.Navigation.Setting
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import com.kisssum.bianqian3.Navigation.ViewModel
 import com.kisssum.bianqian3.databinding.FragmentSettingBinding
@@ -48,10 +51,7 @@ class SettingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProvider(
-            requireActivity(),
-            ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
-        ).get(ViewModel::class.java)
+        initViewModel()
 
         binding.btnClearBill.setOnClickListener {
             AlertDialog.Builder(requireContext())
@@ -76,6 +76,41 @@ class SettingFragment : Fragment() {
                 .create()
                 .show()
         }
+
+        binding.changeSwitchUiMode.setOnCheckedChangeListener { buttonView, isChecked ->
+            run {
+                when (isChecked) {
+                    true -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                    else -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                }
+            }
+        }
+    }
+
+    private fun initViewModel() {
+        viewModel = ViewModelProvider(
+            requireActivity(),
+            ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
+        ).get(ViewModel::class.java)
+
+        viewModel.getBillData().observe(requireActivity()) {
+            binding.billCount.text = it.size.toString()
+        }
+
+        viewModel.getMenoData().observe(requireActivity()) {
+            binding.menoCount.text = it.size.toString()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        binding.changeSwitchUiMode.isChecked = isDarkTheme(requireContext())
+    }
+
+    private fun isDarkTheme(context: Context): Boolean {
+        val flag = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        return flag == Configuration.UI_MODE_NIGHT_YES
     }
 
     companion object {

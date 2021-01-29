@@ -2,6 +2,7 @@ package com.kisssum.bianqian3.Navigation.Setting
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
 import android.content.DialogInterface
 import android.content.res.Configuration
 import android.os.Bundle
@@ -86,6 +87,11 @@ class SettingFragment : Fragment() {
                     true -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                     else -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 }
+
+                requireActivity().getSharedPreferences("settings", MODE_PRIVATE)
+                    .edit()
+                    .putBoolean("isDarkTheme", isChecked)
+                    .apply()
             }
         }
 

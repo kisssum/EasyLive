@@ -84,6 +84,7 @@
             android:text="背景"
             android:textSize="12sp" />
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -98,6 +99,35 @@
                 android:layout_weight="1"
                 android:text="深色模式"
                 android:textAlignment="textStart"
+                android:textColor="?attr/actionMenuTextColor"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingTop="20dp"
+            android:paddingBottom="10dp"
+            android:text="其它"
+            android:textSize="12sp" />
+
+
+        <LinearLayout
+            android:id="@+id/exit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="退出"
                 android:textColor="?attr/actionMenuTextColor"
                 android:textSize="16sp" />
         </LinearLayout>

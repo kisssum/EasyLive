@@ -52,7 +52,10 @@ class SettingFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initViewModel()
+        initBtn()
+    }
 
+    private fun initBtn() {
         binding.btnClearBill.setOnClickListener {
             AlertDialog.Builder(requireContext())
                 .setMessage("是否删除所有账单?")
@@ -84,6 +87,17 @@ class SettingFragment : Fragment() {
                     else -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 }
             }
+        }
+
+        binding.exit.setOnClickListener {
+            AlertDialog.Builder(requireContext())
+                .setMessage("是否退出软件?")
+                .setPositiveButton("确认") { dialogInterface: DialogInterface, i: Int ->
+                    requireActivity().finish()
+                }
+                .setNeutralButton("取消") { dialogInterface: DialogInterface, i: Int -> }
+                .create()
+                .show()
         }
     }
 

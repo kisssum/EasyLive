@@ -20,11 +20,18 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.2" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/h1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.8" />
+
     <Button
         android:id="@+id/btnCancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="8dp"
         android:backgroundTint="#f0f0f0f0"
         android:text="取消"
         android:textColor="?attr/actionMenuTextColor"
@@ -36,7 +43,7 @@
         android:id="@+id/btnDone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="8dp"
         android:backgroundTint="#f0f0f0f0"
         android:text="确认"
         android:textColor="?attr/actionMenuTextColor"
@@ -63,38 +70,34 @@
         android:id="@+id/tPrice"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="16dp"
         android:gravity="center|right"
         android:maxLength="8"
         android:text="0.0"
         android:textColor="?attr/actionMenuTextColor"
         android:textSize="44sp"
         app:layout_constraintBottom_toTopOf="@+id/v2"
-        app:layout_constraintEnd_toStartOf="@+id/textView"
+        app:layout_constraintEnd_toStartOf="@+id/h1"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/v1"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="8dp"
         android:gravity="center"
         android:text="CNY"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/v2"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/h1"
         app:layout_constraintTop_toTopOf="@+id/v1" />
 
     <EditText
         android:id="@+id/tNotes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_margin="10dp"
         android:background="@drawable/border_style"
         android:ellipsize="end"
         android:hint="笔记"
@@ -104,6 +107,7 @@
         android:padding="10dp"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/v3" />
 
@@ -112,7 +116,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="8dp"
         android:text="1月2日 11:08"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tNotes" />
@@ -347,22 +351,19 @@
         android:layout_width="0dp"
         android:layout_height="24dp"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="20dp"
-        android:background="@drawable/border_style"
+        android:layout_marginEnd="8dp"
         android:entries="@array/expenditure_type"
         android:spinnerMode="dialog"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView3" />
+        app:layout_constraintStart_toEndOf="@+id/textView3"
+        app:layout_constraintTop_toTopOf="@+id/v2" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="8dp"
         android:text="消费类型"
-        android:textSize="18sp"
-        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/v2" />
 

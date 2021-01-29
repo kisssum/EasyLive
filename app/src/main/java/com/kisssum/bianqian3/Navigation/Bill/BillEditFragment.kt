@@ -196,7 +196,11 @@ class BillEditFragment() : Fragment(), View.OnClickListener {
             Toast.makeText(requireContext(), "无数据，保存失败", Toast.LENGTH_SHORT).show()
         } else {
             bill.price = if (price == "") 0.0 else price.toDouble()
-            bill.notes = binding.tNotes.text.toString()
+
+            bill.notes = when (binding.tNotes.text.toString() == "") {
+                true -> resources.getStringArray(R.array.expenditure_type)[binding.type.selectedItemPosition]
+                else -> binding.tNotes.text.toString()
+            }
 
             val billDao = viewModel.getBillDao()
             if (uid == -1) billDao.inserts(bill) else billDao.updates(bill)

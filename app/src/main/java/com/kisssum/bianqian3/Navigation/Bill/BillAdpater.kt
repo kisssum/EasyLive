@@ -4,16 +4,15 @@ import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.kisssum.bianqian3.Data.Entity.Bill
 import com.kisssum.bianqian3.Navigation.ViewModel
 import com.kisssum.bianqian3.R
+import com.kisssum.bianqian3.databinding.BillItemHaveTitleBinding
+import com.kisssum.bianqian3.databinding.BillItemNoTitleBinding
 import java.util.*
 
 class BillAdpater(val context: Context, val viewModel: ViewModel) :
@@ -44,34 +43,34 @@ class BillAdpater(val context: Context, val viewModel: ViewModel) :
         notifyDataSetChanged()
     }
 
-    class NoTitleViewHodel(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val icon = itemView.findViewById<ImageView>(R.id.icon)
-        val notes = itemView.findViewById<TextView>(R.id.notes)
-        val price = itemView.findViewById<TextView>(R.id.price)
-        val time = itemView.findViewById<TextView>(R.id.time)
+    inner class NoTitleViewHodel(binding: BillItemNoTitleBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        val icon = binding.icon
+        val notes = binding.notes
+        val price = binding.price
+        val time = binding.time
     }
 
-    class HaveTitleViewHodel(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val icon = itemView.findViewById<ImageView>(R.id.icon)
-        val notes = itemView.findViewById<TextView>(R.id.notes)
-        val price = itemView.findViewById<TextView>(R.id.price)
-        val time = itemView.findViewById<TextView>(R.id.time)
-        val longTime = itemView.findViewById<TextView>(R.id.longTime)
+    inner class HaveTitleViewHodel(binding: BillItemHaveTitleBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        val icon = binding.icon
+        val notes = binding.notes
+        val price = binding.price
+        val time = binding.time
+        val longTime = binding.longTime
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
         // 根据类型判断用什么布局
         NO_TITLE -> {
-            val item = LayoutInflater.from(parent.context)
-                .inflate(R.layout.bill_item_no_title, parent, false)
-
-            NoTitleViewHodel(item)
+            val binding =
+                BillItemNoTitleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            NoTitleViewHodel(binding)
         }
         else -> {
-            val item = LayoutInflater.from(parent.context)
-                .inflate(R.layout.bill_item_have_title, parent, false)
-
-            HaveTitleViewHodel(item)
+            val binding =
+                BillItemHaveTitleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            HaveTitleViewHodel(binding)
         }
     }
 

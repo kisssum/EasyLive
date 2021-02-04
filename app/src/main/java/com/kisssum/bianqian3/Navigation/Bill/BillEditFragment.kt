@@ -168,7 +168,7 @@ class BillEditFragment() : Fragment(), View.OnClickListener {
                         }, hour, minute, true
                     ).show()
                 }
-                .setNeutralButton("cancel") { dialogInterface: DialogInterface, i: Int -> }
+                .setNeutralButton("取消") { dialogInterface: DialogInterface, i: Int -> }
                 .create()
                 .show()
         }

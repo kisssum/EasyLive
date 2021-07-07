@@ -5,6 +5,6 @@
     <!-- 填充色 -->
     <solid android:color="@android:color/transparent"/>
     <!-- 描边 设置线宽及颜色 -->
-    <stroke android:color="#BBBBBB"
-        android:width="0.5dp"/>
+    <stroke android:color="#e0e0e0"
+        android:width="0.1dp"/>
 </shape>
